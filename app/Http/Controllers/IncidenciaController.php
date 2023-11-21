@@ -15,7 +15,7 @@ class IncidenciaController extends Controller
     {
         $incidencias = $request->validated();
 
-        Mail::to('crecalde@gadpe.gob.ec')
+        Mail::to('pconstantini@gadpe.gob.ec')
             ->queue(new IncidenciaMail($incidencias));
 
         return response()->json(['status' => 'success', 'msg' => 'Solicitud enviada con éxito'], 200);
