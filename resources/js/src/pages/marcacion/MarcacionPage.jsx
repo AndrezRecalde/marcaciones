@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 import { Container, SimpleGrid, Text, Title } from "@mantine/core";
 import { useDateTime, useMarcacionStore } from "../../hooks";
-import { Loading, MarcacionCard } from "../../components";
-import { IconDoorEnter, IconDoorExit } from "@tabler/icons-react";
+import { Loading, MarcacionCard, StatAlert } from "../../components";
+import { IconDoorEnter, IconDoorExit, IconInfoCircle } from "@tabler/icons-react";
 
 import classes from "./MarcacionModule/Marcacion.module.css";
 
@@ -48,7 +48,7 @@ export const MarcacionPage = () => {
             {isLoading ? (
                 <Loading />
             ) : (
-                <SimpleGrid cols={{ base: 1, sm: 2, lg: 2 }}>
+                <SimpleGrid cols={{ base: 1, sm: 2, lg: 2 }} my="md">
                     <MarcacionCard
                         icon={IconDoorEnter}
                         color="teal.8"
@@ -74,6 +74,8 @@ export const MarcacionPage = () => {
                     />
                 </SimpleGrid>
             )}
+
+            <StatAlert text="El horario de marcación se rige de: 08:00 A.M hasta las 16:00 P.M" variant="light" color="orange.7" icon={IconInfoCircle} />
         </Container>
     );
 };
