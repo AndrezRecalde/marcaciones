@@ -107,7 +107,7 @@
         </table>
 
         <p class="mt-3" style="text-align: justify;">El presente informe detalla las actividades realizadas durante el
-            periodo 01-11-2023 hasta 30-11-2023.
+            periodo {{ $fecha_inicio }} hasta {{ $fecha_fin }}.
             Estas actividades en las cuales me desempeñé estan alineadas con los objetivos establecidos previamente,
             con el enfoque que establece el departamento de {{ $actividades[0]->departamento }}.
         </p>
