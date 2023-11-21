@@ -8,6 +8,9 @@ export const BtnServices = () => {
                 leftSection={<IconMailFast size={16} color="orange" />}
                 radius="xl"
                 variant="default"
+                component="a"
+                href="https://www.gadpe.gob.ec/webmail"
+                target="_blank"
             >
                 Webmail
             </Button>
@@ -15,6 +18,9 @@ export const BtnServices = () => {
                 leftSection={<IconCategory size={16} color="indigo" />}
                 radius="xl"
                 variant="default"
+                component="a"
+                href="http://186.46.193.22:8080/intranet"
+                target="_blank"
             >
                 Intranet
             </Button>
