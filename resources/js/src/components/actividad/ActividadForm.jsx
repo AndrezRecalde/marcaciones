@@ -40,8 +40,8 @@ export const ActividadForm = ({ fecha_inicio, fecha_fin }) => {
         e.preventDefault();
         startAddActividad(
             form.values,
-            fecha_inicio.toLocaleDateString("en-CA"),
-            fecha_fin.toLocaleDateString("en-CA")
+            fecha_inicio,
+            fecha_fin
         );
         modalActionActividad(0);
         form.reset();

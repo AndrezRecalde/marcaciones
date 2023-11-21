@@ -8,9 +8,8 @@ import controlApi from "../../api/controlApi";
 import Swal from "sweetalert2";
 
 export const useActividadStore = () => {
-    const { isLoading, actividades, activateActividad, tableLoad, errores } = useSelector(
-        (state) => state.actividad
-    );
+    const { isLoading, actividades, activateActividad, tableLoad, errores } =
+        useSelector((state) => state.actividad);
 
     const dispatch = useDispatch();
 
@@ -34,7 +33,7 @@ export const useActividadStore = () => {
         }
     };
 
-    const startAddActividad = async (actividad ,fecha_inicio, fecha_fin) => {
+    const startAddActividad = async (actividad, fecha_inicio, fecha_fin) => {
         try {
             if (actividad.id) {
                 const { data } = await controlApi.put(
@@ -47,7 +46,11 @@ export const useActividadStore = () => {
                     showConfirmButton: false,
                     timer: 1000,
                 });
-                startLoadActividades(actividad.cdgo_usrio, fecha_inicio, fecha_fin );
+                startLoadActividades(
+                    actividad.cdgo_usrio,
+                    fecha_inicio.toLocaleDateString("en-CA"),
+                    fecha_fin.toLocaleDateString("en-CA")
+                );
                 setClearActivateActividad();
                 return;
             }
@@ -112,7 +115,7 @@ export const useActividadStore = () => {
 
     const setClearActivateActividad = () => {
         dispatch(onSetActivateActividad(null));
-    }
+    };
 
     const startClearActividades = () => {
         dispatch(onClearActividades());
