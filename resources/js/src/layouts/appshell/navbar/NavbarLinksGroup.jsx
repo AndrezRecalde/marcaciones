@@ -25,7 +25,7 @@ export const LinksGroup = ({ icon: Icon, label, initiallyOpened, links }) => {
         <Group justify="space-between" gap={0}>
           <Box style={{ display: 'flex', alignItems: 'center' }}>
             <ThemeIcon variant="light" radius="lg" size="lg">
-              <Icon style={{ width: rem(18), height: rem(18) }} />
+              <Icon style={{ width: rem(20), height: rem(20) }} />
             </ThemeIcon>
             <Box ml="md">{label}</Box>
           </Box>
