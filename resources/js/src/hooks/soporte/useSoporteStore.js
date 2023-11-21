@@ -8,12 +8,13 @@ export const useSoporteStore = () => {
     const { isLoading } = useSelector(state => state.soporte);
     const dispatch = useDispatch();
 
-    const startSendSoporte = async (detalle_incidencia, usu_alias, departamento) => {
+    const startSendSoporte = async (detalle_incidencia, usu_alias, email, departamento) => {
         try {
             dispatch(onLoading(true));
             const { data } = await controlApi.post("/incidencias/mail", {
                 detalle_incidencia,
                 usu_alias,
+                email,
                 departamento,
             });
             Swal.fire({

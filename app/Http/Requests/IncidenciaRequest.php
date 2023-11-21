@@ -26,6 +26,7 @@ class IncidenciaRequest extends FormRequest
         return [
             'detalle_incidencia' => 'required',
             'usu_alias'  =>  'required',
+            'email'  =>  'required',
             'departamento'  =>  'required',
         ];
     }
@@ -35,6 +36,7 @@ class IncidenciaRequest extends FormRequest
         return [
             'detalle_incidencia.required' =>  'La actividad es obligatoria',
             'usu_alias.required' =>  'El usuario es obligatorio',
+            'email.required' =>  'El correo es obligatorio',
             'departamento.required' =>  'El usuario es obligatorio',
         ];
     }

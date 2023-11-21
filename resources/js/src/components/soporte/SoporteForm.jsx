@@ -21,7 +21,7 @@ export const SoporteForm = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        startSendSoporte(detalle_incidencia, srv_user.usu_alias, srv_user.departamento);
+        startSendSoporte(detalle_incidencia, srv_user.usu_alias, srv_user.email, srv_user.departamento);
         form.reset();
     };
 

@@ -5,6 +5,7 @@
 Buen día.
 
 El funcionario: {{ $incidencia['usu_alias'] }} <br>
+Con correo: {{ $incidencia['email'] }} <br>
 del departamento: {{ $incidencia['departamento'] }} <br><br>
 
 ### Descripción del problema:<br>
