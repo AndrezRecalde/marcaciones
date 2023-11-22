@@ -8,7 +8,7 @@ export const PrivatePages = () => {
             <Routes>
                 <Route path="/marcacion" element={<MarcacionPage />} />
                 <Route path="/reporte/marcaciones" element={<ReporteMarcacionPage />} />
-                <Route path="/reporte/marcaciones/admin" element={<ReporteMarcacionAdminPage />} />
+                <Route path="/reporte/marcaciones/admin/tthh" element={<ReporteMarcacionAdminPage />} />
 
 
                 <Route path="/actividad" element={<ActividadPage />} />
