@@ -54,7 +54,7 @@ export const ActividadForm = ({ fecha_inicio, fecha_fin }) => {
             <Grid>
                 <Grid.Col span={{ base: 12, md: 12, lg: 12 }}>
                     <DateInput
-                        minDate={new Date()}
+                        minDate={dayjs(new Date()).add(-4, "days").toDate()}
                         maxDate={dayjs(new Date()).add(1, "month").toDate()}
                         valueFormat="YYYY-MM-DD"
                         label="Fecha de la actividad"
