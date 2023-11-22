@@ -41,7 +41,11 @@
         }
 
         .marginFooter {
-            margin-top: 80px;
+            position: static;
+            bottom: -80px;
+            left: 0px;
+            right: 0px;
+            height: 400px;
         }
 
         table {
@@ -92,7 +96,7 @@
             <tr>
                 <td width="80px"><b>PARA:</b></td>
                 <td>{{ $actividades[0]->director }}
-                    <sub><i>{{ $actividades[0]->cargo_director . ' DE ' .$actividades[0]->departamento }}</i></sub>
+                    <sub><i>{{ $actividades[0]->cargo_director . ' DE ' . $actividades[0]->departamento }}</i></sub>
                 </td>
 
             </tr>
@@ -108,10 +112,10 @@
 
         <p class="mt-3" style="text-align: justify;">El presente informe detalla las actividades realizadas durante el
             periodo {{ $fecha_inicio }} hasta {{ $fecha_fin }}.
-            Estas actividades en las cuales me desempeñé estan alineadas con los objetivos establecidos previamente,
-            con el enfoque que establece el departamento de {{ $actividades[0]->departamento }}.
+            Estas actividades en las cuales me desempeñé en el marco de mis responsabilidades laborales estan alineadas
+            con los objetivos establecidos del departamento de {{ $actividades[0]->departamento }}.
         </p>
-        <p>A continuación, detalló las actividades realizadas: </p>
+        <p>A continuación, detallo las siguientes actividades realizadas: </p>
         <div class="mt-3">
             <table style="width:100%">
                 <tr>
@@ -128,7 +132,7 @@
         </div>
     </main>
 
-    <div class="marginFooter marginMain">
+    <div class="marginFooter">
         <table>
             <tr>
                 <td>
@@ -145,8 +149,12 @@
                     <div class="align-item: right;">
                         <p class="mb-5" style="font-size: 12px">Aprobado por:</p>
                         <hr class="solid 2px margines">
-                        <p style="font-size: 14px">{{ $actividades[0]->director }}</p>
-                        <p style="font-size: 14px">{{ $actividades[0]->cargo_director }}</p>
+                        <p style="font-size: 14px">
+                            {{ $actividades[0]->cargo_usuario === 'DIRECTOR/A' ? 'Zambrano Ortíz Roberta María' : $actividades[0]->director }}
+                        </p>
+                        <p style="font-size: 14px">
+                            {{ $actividades[0]->cargo_usuario === 'DIRECTOR/A' ? 'PREFECTO/A PROVINCIAL' : $actividades[0]->cargo_director }}
+                        </p>
                     </div>
                 </td>
             </tr>
