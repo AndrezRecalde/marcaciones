@@ -39,14 +39,13 @@ export const useAuthStore = () => {
         try {
             const { data } = await controlApi.get("/refresh");
             const { user } = data;
-            console.log(user);
+            //console.log(user);
             localStorage.setItem("user_srvm", JSON.stringify(data.user));
             localStorage.setItem("eth_token", data.access_token);
             localStorage.setItem("token_init_date", new Date().getTime());
             dispatch(onAuthenticate(user));
-            //startProfile();
         } catch (error) {
-            console.log(error);
+            //console.log(error);
             localStorage.clear();
             dispatch(onLogout());
         }

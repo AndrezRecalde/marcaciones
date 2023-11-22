@@ -6,6 +6,7 @@ import {
     onErrores,
     onLoadMarcacion,
     onLoadMarcaciones,
+    onLoadPDF,
     onLoading,
     //onUpdateMarcacion,
 } from "../../store/marcacion/marcacionSlice";
@@ -13,7 +14,7 @@ import {
 import Swal from "sweetalert2";
 
 export const useMarcacionStore = () => {
-    const { isLoading, marcacion, marcaciones, tableLoad, errores } =
+    const { isLoading, loadPDF, marcacion, marcaciones, tableLoad, errores } =
         useSelector((state) => state.marcacion);
     const dispatch = useDispatch();
 
@@ -24,10 +25,10 @@ export const useMarcacionStore = () => {
                 user_id,
             });
             const { marcacion } = data;
-            console.log(marcacion);
+            //console.log(marcacion);
             dispatch(onLoadMarcacion(marcacion));
         } catch (error) {
-            console.log(error);
+            //console.log(error);
             const mensaje = error.response.data.msg
                 ? error.response.data.msg
                 : error.response.data.errores
@@ -80,6 +81,7 @@ export const useMarcacionStore = () => {
 
     const startExportExcelMarcacionesAdmin = async (fecha) => {
         try {
+            dispatch(onLoadPDF(true));
             const response = await controlApi.post(
                 "/export/excel/marcaciones/admin",
                 { fecha },
@@ -91,6 +93,7 @@ export const useMarcacionStore = () => {
                 })
             );
             window.open(url, "_blank");
+            dispatch(onLoadPDF(false));
         } catch (error) {
             Swal.fire({
                 icon: "error",
@@ -106,7 +109,7 @@ export const useMarcacionStore = () => {
             const { data } = await controlApi.post("/marcaciones/admin", {
                 fecha,
             });
-            console.log(data);
+            //console.log(data);
             const { marcaciones } = data;
             dispatch(onLoadMarcaciones(marcaciones));
         } catch (error) {
@@ -148,6 +151,7 @@ export const useMarcacionStore = () => {
         fecha_fin
     ) => {
         try {
+            dispatch(onLoadPDF(true));
             const response = await controlApi.post(
                 "/export/pdf/marcaciones/user",
                 {
@@ -161,9 +165,10 @@ export const useMarcacionStore = () => {
                 new Blob([response.data], { type: "application/pdf" })
             );
             window.open(url, "_blank");
+            dispatch(onLoadPDF(false));
         } catch (error) {
-            console.log(error);
-            /* Swal.fire({
+            //console.log(error);
+            Swal.fire({
                 icon: "error",
                 title: "Oops...",
                 text: error.response.data.msg
@@ -172,7 +177,7 @@ export const useMarcacionStore = () => {
                     ? error.response.data.errores
                     : Object.values(error.response.data.errores),
                 confirmButtonColor: "#c81d11",
-            }); */
+            });
         }
     };
 
@@ -182,6 +187,7 @@ export const useMarcacionStore = () => {
 
     return {
         isLoading,
+        loadPDF,
         marcacion,
         marcaciones,
         tableLoad,

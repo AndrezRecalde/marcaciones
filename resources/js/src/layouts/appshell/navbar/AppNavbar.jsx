@@ -5,7 +5,7 @@ import classes from "./NavbarModule/AppNavbar.module.css";
 
 export const AppNavbar = () => {
     const srv_user = JSON.parse(localStorage.getItem("user_srvm"));
-    const mockdata =  srv_user.cdgo_usrio === 1303 ? lFuncionarioTTHH : lFuncionarios;
+    const mockdata =  srv_user.cdgo_usrio === 261 ? lFuncionarioTTHH : lFuncionarios;
 
     const links = mockdata.map((item) => (
         <LinksGroup {...item} key={item.label} />

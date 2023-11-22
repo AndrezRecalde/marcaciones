@@ -4,6 +4,7 @@ export const marcacionSlice = createSlice({
     name: "marcacion",
     initialState: {
         isLoading: false,
+        loadPDF: false,
         marcacion: {},
         marcaciones: [],
         tableLoad: false,
@@ -13,6 +14,9 @@ export const marcacionSlice = createSlice({
     reducers: {
         onLoading: (state) => {
             state.isLoading = true;
+        },
+        onLoadPDF: (state, { payload }) => {
+            state.loadPDF = payload;
         },
         onLoadMarcacion: (state, { payload }) => {
             state.marcacion = payload;
@@ -29,10 +33,12 @@ export const marcacionSlice = createSlice({
             state.marcacion = [];
             state.tableLoad = false;
             state.isLoading = false;
+            state.loadPDF = false;
         },
         onErrores: (state, { payload }) => {
             state.errores = payload;
             state.isLoading = false;
+            state.loadPDF = false;
             state.marcacion = {};
         },
     },
@@ -40,6 +46,7 @@ export const marcacionSlice = createSlice({
 
 export const {
     onLoading,
+    onLoadPDF,
     onLoadMarcacion,
     onLoadMarcaciones,
     //onAddMarcacion,

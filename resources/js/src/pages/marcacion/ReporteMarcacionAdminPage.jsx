@@ -1,4 +1,4 @@
-import { Box, Button, Container, Grid, rem } from "@mantine/core";
+import { Box, Button, Container, Grid, LoadingOverlay, rem } from "@mantine/core";
 import { useMaterialReactTable } from "material-react-table";
 import { BtnSubmit, MRTableContent, TitlePage } from "../../components";
 import { DateInput } from "@mantine/dates";
@@ -12,8 +12,9 @@ export const ReporteMarcacionAdminPage = () => {
         startLoadMarcacionesAdmin,
         marcaciones,
         tableLoad,
+        loadPDF,
         startExportExcelMarcacionesAdmin,
-        startClearMarcacion
+        startClearMarcacion,
     } = useMarcacionStore();
 
     const form = useForm({
@@ -29,7 +30,7 @@ export const ReporteMarcacionAdminPage = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(fecha.toLocaleDateString("en-CA"));
+        //console.log(fecha.toLocaleDateString("en-CA"));
         startLoadMarcacionesAdmin(fecha.toLocaleDateString("en-CA"));
     };
 
@@ -104,6 +105,12 @@ export const ReporteMarcacionAdminPage = () => {
                 component="form"
                 onSubmit={form.onSubmit((_, e) => handleSubmit(e))}
             >
+                <LoadingOverlay
+                    visible={loadPDF}
+                    zIndex={1000}
+                    overlayProps={{ radius: "sm", blur: 2 }}
+                />
+
                 <Grid grow>
                     <Grid.Col span={{ base: 12, md: 12, lg: 12 }}>
                         <DateInput

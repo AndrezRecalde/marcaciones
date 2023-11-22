@@ -2,7 +2,7 @@ import { Button, Paper, Stack, Text, ThemeIcon, rem } from "@mantine/core";
 import classes from "./MarcacionCard/MarcacionCard.module.css";
 
 export const MarcacionCard = ({ icon:Icon, color, title, registro, handleBtnMarcacion, btnTitle }) => {
-    console.log('clic')
+    //console.log('clic')
     return (
         <Paper radius="md" withBorder className={classes.card} mt={30}>
             <ThemeIcon className={classes.icon} color={color} size={60} radius={60}>

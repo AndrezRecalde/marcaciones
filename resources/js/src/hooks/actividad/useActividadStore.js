@@ -2,13 +2,14 @@ import { useDispatch, useSelector } from "react-redux";
 import {
     onClearActividades,
     onLoadActividades,
+    onLoadPDF,
     onSetActivateActividad,
 } from "../../store/actividad/actividadSlice";
 import controlApi from "../../api/controlApi";
 import Swal from "sweetalert2";
 
 export const useActividadStore = () => {
-    const { isLoading, actividades, activateActividad, tableLoad, errores } =
+    const { isLoading, loadPDF, actividades, activateActividad, tableLoad, errores } =
         useSelector((state) => state.actividad);
 
     const dispatch = useDispatch();
@@ -23,7 +24,7 @@ export const useActividadStore = () => {
             const { actividades } = data;
             dispatch(onLoadActividades(actividades));
         } catch (error) {
-            console.log(error);
+            //console.log(error);
             Swal.fire({
                 icon: "error",
                 title: "Oops...",
@@ -65,7 +66,7 @@ export const useActividadStore = () => {
                 timer: 1000,
             });
         } catch (error) {
-            console.log(error);
+            //console.log(error);
             Swal.fire({
                 icon: "error",
                 title: "Oops...",
@@ -81,6 +82,7 @@ export const useActividadStore = () => {
         fecha_fin
     ) => {
         try {
+            dispatch(onLoadPDF(true));
             const response = await controlApi.post(
                 "/export/pdf/actividades",
                 {
@@ -94,9 +96,10 @@ export const useActividadStore = () => {
                 new Blob([response.data], { type: "application/pdf" })
             );
             window.open(url, "_blank");
+            dispatch(onLoadPDF(false));
         } catch (error) {
-            console.log(error);
-            /* Swal.fire({
+            //console.log(error);
+            Swal.fire({
                 icon: "error",
                 title: "Oops...",
                 text: error.response.data.msg
@@ -105,7 +108,7 @@ export const useActividadStore = () => {
                     ? error.response.data.errores
                     : Object.values(error.response.data.errores),
                 confirmButtonColor: "#c81d11",
-            }); */
+            });
         }
     };
 
@@ -123,6 +126,7 @@ export const useActividadStore = () => {
 
     return {
         isLoading,
+        loadPDF,
         actividades,
         activateActividad,
         tableLoad,

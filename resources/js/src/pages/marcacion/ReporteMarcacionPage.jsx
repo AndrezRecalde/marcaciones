@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from "react";
-import { Box, Button, Container, Grid, rem } from "@mantine/core";
+import { Box, Button, Container, Grid, LoadingOverlay, rem } from "@mantine/core";
 import { BtnSubmit, MRTableContent, TitlePage } from "../../components";
 import { DateInput } from "@mantine/dates";
 import { isNotEmpty, useForm } from "@mantine/form";
@@ -12,6 +12,7 @@ export const ReporteMarcacionPage = () => {
     const {
         marcaciones,
         tableLoad,
+        loadPDF,
         startLoadMarcacionesUser,
         startExportPDFMarcacionUser,
         startClearMarcacion
@@ -111,6 +112,7 @@ export const ReporteMarcacionPage = () => {
                 component="form"
                 onSubmit={form.onSubmit((_, e) => handleSubmit(e))}
             >
+            <LoadingOverlay visible={loadPDF} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
                 <Grid grow>
                     <Grid.Col span={{ base: 6, md: 6, lg: 6 }}>
                         <DateInput

@@ -4,6 +4,7 @@ export const actividadSlice = createSlice({
     name: "actividad",
     initialState: {
         isLoading: false,
+        loadPDF: false,
         tableLoad: false,
         actividades: [],
         activateActividad: null,
@@ -12,6 +13,9 @@ export const actividadSlice = createSlice({
     reducers: {
         onLoading: (state) => {
             state.isLoading = true;
+        },
+        onLoadPDF: (state, { payload }) => {
+            state.loadPDF = payload;
         },
         onLoadActividades: (state, { payload }) => {
             state.actividades = payload;
@@ -27,12 +31,13 @@ export const actividadSlice = createSlice({
             state.actividades = [];
             state.activateActividad = null;
             state.isLoading = false;
+            state.loadPDF = false;
             state.tableLoad = false;
-
         },
         onErrores: (state, { payload }) => {
             state.errores = payload;
             state.isLoading = false;
+            state.loadPDF = false;
             state.tableLoad = false;
             state.actividades = [];
             state.activateActividad = null;
@@ -40,5 +45,11 @@ export const actividadSlice = createSlice({
     },
 });
 
-export const { onLoading, onLoadActividades, onSetActivateActividad, onClearActividades, onErrores } =
-    actividadSlice.actions;
+export const {
+    onLoading,
+    onLoadPDF,
+    onLoadActividades,
+    onSetActivateActividad,
+    onClearActividades,
+    onErrores,
+} = actividadSlice.actions;

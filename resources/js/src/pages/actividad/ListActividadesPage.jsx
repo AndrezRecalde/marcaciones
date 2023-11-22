@@ -1,9 +1,14 @@
 import { useCallback, useEffect, useMemo } from "react";
 import { useMaterialReactTable } from "material-react-table";
-import { Box, Button, Container, Grid, Menu, rem } from "@mantine/core";
+import { Box, Button, Container, Grid, LoadingOverlay, Menu, rem } from "@mantine/core";
 import { isNotEmpty, useForm } from "@mantine/form";
 import { DateInput } from "@mantine/dates";
-import { BtnSubmit, MRTableContent, ModalActividad, TitlePage } from "../../components";
+import {
+    BtnSubmit,
+    MRTableContent,
+    ModalActividad,
+    TitlePage,
+} from "../../components";
 import { useActividadStore, useUiActividad } from "../../hooks";
 import { IconDownload, IconEdit, IconSearch } from "@tabler/icons-react";
 
@@ -13,11 +18,12 @@ export const ListActividadesPage = () => {
 
     const {
         tableLoad,
+        loadPDF,
         actividades,
         startLoadActividades,
         startExportPDFActividades,
         startClearActividades,
-        setActivateActividad
+        setActivateActividad,
     } = useActividadStore();
 
     const form = useForm({
@@ -64,12 +70,12 @@ export const ListActividadesPage = () => {
     };
 
     const handleEditActividad = useCallback(
-      (selected) => {
-        setActivateActividad(selected);
-        modalActionActividad(1);
-      },
-      [actividades],
-    )
+        (selected) => {
+            setActivateActividad(selected);
+            modalActionActividad(1);
+        },
+        [actividades]
+    );
 
     const handleExportDataPDF = (e) => {
         e.preventDefault();
@@ -83,21 +89,19 @@ export const ListActividadesPage = () => {
                 fecha_inicio.toLocaleDateString("en-CA"),
                 fecha_fin.toLocaleDateString("en-CA")
             );
-            console.log(
+            /* console.log(
                 srv_user.cdgo_usrio,
                 fecha_inicio.toLocaleDateString("en-CA"),
                 fecha_fin.toLocaleDateString("en-CA")
-            );
+            ); */
         }
     };
 
     useEffect(() => {
-
-      return () => {
-        startClearActividades();
-      }
+        return () => {
+            startClearActividades();
+        };
     }, [fecha_inicio, fecha_fin]);
-
 
     const table = useMaterialReactTable({
         columns,
@@ -128,17 +132,14 @@ export const ListActividadesPage = () => {
                         // View profile logic...
                         closeMenu();
                         handleEditActividad(row.original);
-
                     }}
                     leftSection={
-                        <IconEdit
-                            style={{ width: rem(14), height: rem(14) }}
-                        />
+                        <IconEdit style={{ width: rem(14), height: rem(14) }} />
                     }
                 >
                     Editar
                 </Menu.Item>
-            </Menu>
+            </Menu>,
         ],
     });
 
@@ -155,6 +156,12 @@ export const ListActividadesPage = () => {
                 component="form"
                 onSubmit={form.onSubmit((_, e) => handleSubmit(e))}
             >
+                <LoadingOverlay
+                    visible={loadPDF}
+                    zIndex={1000}
+                    overlayProps={{ radius: "sm", blur: 2 }}
+                />
+
                 <Grid grow>
                     <Grid.Col span={{ base: 6, md: 6, lg: 6 }}>
                         <DateInput
