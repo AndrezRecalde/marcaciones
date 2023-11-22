@@ -76,6 +76,7 @@ class ActividadController extends Controller
             ->join('usrios_sstma as us', 'us.cdgo_usrio', 'd.id_jefe')
             ->where('a.user_id', $request->user_id)
             ->whereBetween('a.fecha_actividad', [$request->fecha_inicio, $request->fecha_fin])
+            ->orderBy('current_fecha', 'ASC')
             ->get();
 
         if (sizeof($actividades) >= 1) {

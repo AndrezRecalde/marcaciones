@@ -17,7 +17,7 @@ class AuthController extends Controller
             $user = User::from('usrios_sstma as u')
                 ->selectRaw('u.cdgo_usrio, u.lgin, u.usu_alias,
                             u.email, d.nmbre_dprtmnto as departamento')
-                ->join('dprtmntos as d', 'd.cdgo_dprtmnto', 'u.cdgo_dprtmnto')
+                ->join('dprtmntos as d', 'd.cdgo_dprtmnto', 'u.cdgo_direccion')
                 ->where('u.lgin', $request->lgin)
                 ->where('u.paswrd', md5($request->paswrd))
                 ->where('u.actvo', 1)
@@ -44,7 +44,7 @@ class AuthController extends Controller
         $user = User::from('usrios_sstma as u')
             ->selectRaw('u.cdgo_usrio, u.lgin, u.usu_alias,
                          u.email, d.nmbre_dprtmnto as departamento')
-            ->join('dprtmntos as d', 'd.cdgo_dprtmnto', 'u.cdgo_dprtmnto')
+            ->join('dprtmntos as d', 'd.cdgo_dprtmnto', 'u.cdgo_direccion')
             ->where('u.cdgo_usrio', Auth::user()->cdgo_usrio)
             ->first();
 

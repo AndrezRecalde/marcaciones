@@ -71,12 +71,12 @@
 
 <body>
 
-    <footer>
+    {{-- <footer>
         <div style="line-height: normal;">
             <p style="font-size: 14px;">Dirección: 10 de Agosto entre Bolívar y Pedro Vicente Maldonado</p>
             <p style="font-size: 14px;">Telefono: 06-2721433</p>
         </div>
-    </footer>
+    </footer> --}}
 
 
     <main class="mb-5">
@@ -116,8 +116,8 @@
             con los objetivos establecidos del departamento de {{ $actividades[0]->departamento }}.
         </p>
         <p>A continuación, detallo las siguientes actividades realizadas: </p>
-        <div class="mt-3">
-            <table style="width:100%">
+        <div class="mt-3 mb-3">
+            <table style="width:100%;">
                 <tr>
                     <th><b>FECHA:</b></th>
                     <th><b>ACTIVIDAD</b></th>
