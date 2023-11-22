@@ -26,8 +26,8 @@
   }
 
   .linksInner {
-    padding-top: var(--mantine-spacing-md) !important;
-    padding-bottom: var(--mantine-spacing-md) !important;
+    padding-top: var(--mantine-spacing-md);
+    padding-bottom: var(--mantine-spacing-md);
   }
 
   .footer {

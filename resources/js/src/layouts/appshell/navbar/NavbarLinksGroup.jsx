@@ -4,7 +4,7 @@ import { Group, Box, Collapse, ThemeIcon, Text, UnstyledButton, rem } from '@man
 import { IconChevronRight } from '@tabler/icons-react';
 import classes from './NavbarModule/NavbarLinksGroup.module.css';
 
-export const LinksGroup = ({ icon: Icon, label, initiallyOpened, links }) => {
+export const LinksGroup = ({ icon: Icon, label, initiallyOpened, links, toggleMobile }) => {
   const hasLinks = Array.isArray(links);
   const [opened, setOpened] = useState(initiallyOpened || false);
   const items = (hasLinks ? links : []).map((link) => (
@@ -13,7 +13,7 @@ export const LinksGroup = ({ icon: Icon, label, initiallyOpened, links }) => {
       className={classes.link}
       to={link.link}
       key={link.label}
-      //onClick={(event) => event.preventDefault()}
+      onClick={toggleMobile}
     >
       {link.label}
     </Text>
