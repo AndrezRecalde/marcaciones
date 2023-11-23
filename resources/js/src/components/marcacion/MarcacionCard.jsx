@@ -1,7 +1,7 @@
 import { Button, Paper, Stack, Text, ThemeIcon, rem } from "@mantine/core";
 import classes from "./MarcacionCard/MarcacionCard.module.css";
 
-export const MarcacionCard = ({ icon:Icon, color, title, registro, handleBtnMarcacion, btnTitle }) => {
+export const MarcacionCard = ({ icon:Icon, color, title, registro, handleBtnMarcacion, btnTitle, disabled = 1 }) => {
     //console.log('clic')
     return (
         <Paper radius="md" withBorder className={classes.card} mt={30}>
@@ -26,7 +26,7 @@ export const MarcacionCard = ({ icon:Icon, color, title, registro, handleBtnMarc
                     color={color}
                     radius="md"
                     onClick={handleBtnMarcacion}
-                    disabled={registro !== null ? 1 : 0}
+                    disabled={disabled}
                 >
                     {btnTitle}
                 </Button>

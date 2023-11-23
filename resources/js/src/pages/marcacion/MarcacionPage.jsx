@@ -71,6 +71,7 @@ export const MarcacionPage = () => {
                         }
                         handleBtnMarcacion={handleBtnMarcacion}
                         btnTitle="Marcar salida"
+                        disabled={0}
                     />
                 </SimpleGrid>
             )}
