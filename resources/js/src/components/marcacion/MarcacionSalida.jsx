@@ -10,6 +10,8 @@ export const MarcacionSalida = ({
     btnTitle,
     currentTime
 }) => {
+    console.log(currentTime);
+    console.log(currentTime < '12:00:00')
     return (
         <Paper radius="md" withBorder className={classes.card} mt={30}>
             <ThemeIcon
