@@ -87,9 +87,14 @@ class MarcacionController extends Controller
         $marcaciones = Marcacion::from('srv_marcaciones as m')
             ->selectRaw('m.id, date_format(m.fecha, "%Y-%m-%d") as current_fecha,
                          m.reg_entrada, m.reg_salida,
-                         u.nmbre_usrio as usuario')
+                         u.nmbre_usrio as usuario,
+                         d.nmbre_dprtmnto as departamento')
             ->join('usrios_sstma as u', 'u.cdgo_usrio', 'm.user_id')
-            ->where('m.fecha', $request->fecha)
+            ->join('dprtmntos as d', 'd.cdgo_dprtmnto', 'u.cdgo_direccion')
+            ->fecha($request->fecha)
+            ->fechas($request->fecha_inicio, $request->fecha_fin)
+            ->departamento($request->cdgo_dprtmnto)
+            ->usuario($request->cdgo_usrio)
             ->orderBy('u.nmbre_usrio', 'ASC')
             ->get();
 
@@ -99,7 +104,11 @@ class MarcacionController extends Controller
     function exportExcelMarcacionesAdmin(Request $request)
     {
         return Excel::download(new MarcacionesExport(
-            $request->fecha
+            $request->fecha,
+            $request->fecha_inicio,
+            $request->fecha_fin,
+            $request->cdgo_usrio,
+            $request->cdgo_dprtmnto
         ), 'marcaciones.xlsx');
     }
 

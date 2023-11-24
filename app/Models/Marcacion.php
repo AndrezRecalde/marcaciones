@@ -38,4 +38,24 @@ class Marcacion extends Model
         }
     }
 
+    function scopeFecha($query, $fecha)
+    {
+        if ($fecha) {
+            return $query->where('m.fecha', $fecha);
+        }
+    }
+
+    function scopeFechas($query, $fecha_inicio, $fecha_fin)
+    {
+        if ($fecha_inicio) {
+            return $query->whereBetween('m.fecha', [$fecha_inicio, $fecha_fin]);
+        }
+    }
+
+    function scopeDepartamento($query, $departamento)
+    {
+        if ($departamento) {
+            return $query->where('d.cdgo_dprtmnto', $departamento);
+        }
+    }
 }

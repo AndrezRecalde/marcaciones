@@ -79,12 +79,18 @@ export const useMarcacionStore = () => {
         }
     };
 
-    const startExportExcelMarcacionesAdmin = async (fecha) => {
+    const startExportExcelMarcacionesAdmin = async (
+        fecha,
+        fecha_inicio,
+        fecha_fin,
+        cdgo_dprtmnto,
+        cdgo_usrio,
+    ) => {
         try {
             dispatch(onLoadPDF(true));
             const response = await controlApi.post(
                 "/export/excel/marcaciones/admin",
-                { fecha },
+                { fecha, fecha_inicio, fecha_fin, cdgo_dprtmnto, cdgo_usrio },
                 { responseType: "blob" }
             );
             const url = window.URL.createObjectURL(
@@ -104,10 +110,20 @@ export const useMarcacionStore = () => {
         }
     };
 
-    const startLoadMarcacionesAdmin = async (fecha) => {
+    const startLoadMarcacionesAdmin = async (
+        fecha,
+        fecha_inicio,
+        fecha_fin,
+        cdgo_dprtmnto,
+        cdgo_usrio,
+    ) => {
         try {
             const { data } = await controlApi.post("/marcaciones/admin", {
                 fecha,
+                fecha_inicio,
+                fecha_fin,
+                cdgo_dprtmnto,
+                cdgo_usrio,
             });
             //console.log(data);
             const { marcaciones } = data;

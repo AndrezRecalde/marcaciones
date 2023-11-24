@@ -54,7 +54,12 @@ export const ReporteMarcacionAdminPage = () => {
             {
                 accessorKey: "usuario",
                 header: "Empleado",
-                size: 100,
+                size: 80,
+            },
+            {
+                accessorKey: "departamento",
+                header: "Departamento",
+                size: 80,
             },
         ],
         []

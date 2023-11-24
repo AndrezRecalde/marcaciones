@@ -2,8 +2,10 @@
 
 use App\Http\Controllers\ActividadController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\DepartamentoController;
 use App\Http\Controllers\IncidenciaController;
 use App\Http\Controllers\MarcacionController;
+use App\Http\Controllers\UsuarioController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -50,6 +52,10 @@ Route::group(
 
 
         Route::post('/incidencias/mail', [IncidenciaController::class, 'sendIncidencia']);
+
+        Route::post('/departamentos', [DepartamentoController::class, 'getDepartamentos']);
+        Route::post('/usuarios', [UsuarioController::class, 'getUsuariosForDepartamento']);
+
 
     }
 );

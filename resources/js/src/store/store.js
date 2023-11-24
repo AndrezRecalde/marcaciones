@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { actividadSlice, authSlice, marcacionSlice, soporteSlice, uiActividadSlice } from "../store";
+import { actividadSlice, authSlice, departamentoSlice, marcacionSlice, soporteSlice, uiActividadSlice, usuarioSlice } from "../store";
 
 
 export const store = configureStore({
@@ -8,7 +8,9 @@ export const store = configureStore({
         marcacion: marcacionSlice.reducer,
         actividad: actividadSlice.reducer,
         uiActividad: uiActividadSlice.reducer,
-        soporte: soporteSlice.reducer
+        soporte: soporteSlice.reducer,
+        departamento: departamentoSlice.reducer,
+        usuario: usuarioSlice.reducer
     },
 
     middleware: (getDefaultMiddleware) =>

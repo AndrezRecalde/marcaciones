@@ -9,11 +9,17 @@ import { useDateTime } from "./date/useDateTime";
 
 import { useSoporteStore } from "./soporte/useSoporteStore";
 
+import { useDepartamentoStore } from "./departamento/useDepartamentoStore";
+
+import { useUsuarioStore } from "./usuario/useUsuarioStore";
+
 export {
     useAuthStore,
     useMarcacionStore,
     useActividadStore,
     useUiActividad,
     useDateTime,
-    useSoporteStore
+    useSoporteStore,
+    useDepartamentoStore,
+    useUsuarioStore
 };

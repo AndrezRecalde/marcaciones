@@ -37,7 +37,8 @@ export const lFuncionarioTTHH = [
         links: [
             { label: "Marcación diaria", link: "/marcacion" },
             { label: "Reporte de Marcación", link: "/reporte/marcaciones" },
-            { label: "Reporte Administrador", link: "/reporte/marcaciones/admin/tthh" },
+            { label: "Reporte General", link: "/reporte/marcaciones/admin/tthh" },
+            { label: "Reporte Avanzado", link: "/reporte/avanzado/marcaciones/admin/tthh" },
         ],
     },
     {
