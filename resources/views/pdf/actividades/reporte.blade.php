@@ -95,8 +95,10 @@
 
             <tr>
                 <td width="80px"><b>PARA:</b></td>
-                <td>{{ $actividades[0]->director }}
-                    <sub><i>{{ $actividades[0]->cargo_director . ' DE ' . $actividades[0]->departamento }}</i></sub>
+                <td>
+                    {{ $actividades[0]->crgo_id === 5 ? 'González Cervantes Mónica Alexandra' : $actividades[0]->director }}
+                    <sub><i>{{ $actividades[0]->crgo_id === 5 ? 'DIRECTOR/A DE GESTIÓN DE TALENTO HUMANO' : $actividades[0]->cargo_director . ' DE ' . $actividades[0]->departamento }}</i></sub>
+
                 </td>
 
             </tr>
@@ -150,10 +152,10 @@
                         <p class="mb-5" style="font-size: 12px">Aprobado por:</p>
                         <hr class="solid 2px margines">
                         <p style="font-size: 14px">
-                            {{ $actividades[0]->cargo_usuario === 'DIRECTOR/A' ? 'Zambrano Ortíz Roberta María' : $actividades[0]->director }}
+                            {{ $actividades[0]->crgo_id === 5 ? 'González Cervantes Mónica Alexandra' : $actividades[0]->director }}
                         </p>
                         <p style="font-size: 14px">
-                            {{ $actividades[0]->cargo_usuario === 'DIRECTOR/A' ? 'PREFECTO/A PROVINCIAL' : $actividades[0]->cargo_director }}
+                            {{ $actividades[0]->crgo_id === 5 ? 'DIRECTOR/A' : $actividades[0]->cargo_director }}
                         </p>
                     </div>
                 </td>

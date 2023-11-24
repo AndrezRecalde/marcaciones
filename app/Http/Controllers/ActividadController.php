@@ -68,6 +68,7 @@ class ActividadController extends Controller
             ->selectRaw('a.id, a.actividad,
                          date_format(a.fecha_actividad, "%Y-%m-%d") as current_fecha,
                          u.nmbre_usrio as usuario,
+                         u.crgo_id,
                          u.crgo as cargo_usuario,
                          d.nmbre_dprtmnto as departamento,
                          us.nmbre_usrio as director, us.crgo as cargo_director')

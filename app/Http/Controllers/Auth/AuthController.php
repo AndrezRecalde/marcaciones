@@ -15,7 +15,7 @@ class AuthController extends Controller
     {
         try {
             $user = User::from('usrios_sstma as u')
-                ->selectRaw('u.cdgo_usrio, u.lgin, u.usu_alias, u.email,
+                ->selectRaw('u.cdgo_usrio, u.lgin, u.usu_alias, u.email, u.crgo_id,
                             d.cdgo_dprtmnto, d.nmbre_dprtmnto as departamento, d.id_empresa')
                 ->join('dprtmntos as d', 'd.cdgo_dprtmnto', 'u.cdgo_direccion')
                 ->where('u.lgin', $request->lgin)
@@ -42,7 +42,7 @@ class AuthController extends Controller
     function refresh(): JsonResponse
     {
         $user = User::from('usrios_sstma as u')
-            ->selectRaw('u.cdgo_usrio, u.lgin, u.usu_alias, u.email,
+            ->selectRaw('u.cdgo_usrio, u.lgin, u.usu_alias, u.email, u.crgo_id,
                         d.cdgo_dprtmnto, d.nmbre_dprtmnto as departamento, d.id_empresa')
             ->join('dprtmntos as d', 'd.cdgo_dprtmnto', 'u.cdgo_direccion')
             ->where('u.cdgo_usrio', Auth::user()->cdgo_usrio)
