@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { useCallback, useEffect, useMemo } from "react";
 import { useMaterialReactTable } from "material-react-table";
 import { Box, Button, Container, Grid, LoadingOverlay, Menu, rem } from "@mantine/core";
@@ -64,8 +65,8 @@ export const ListActividadesPage = () => {
         e.preventDefault();
         startLoadActividades(
             srv_user.cdgo_usrio,
-            fecha_inicio.toLocaleDateString("en-CA"),
-            fecha_fin.toLocaleDateString("en-CA")
+            dayjs(fecha_inicio).format("YYYY-MM-DD"),
+            dayjs(fecha_fin).format("YYYY-MM-DD")
         );
     };
 
@@ -86,8 +87,8 @@ export const ListActividadesPage = () => {
         ) {
             startExportPDFActividades(
                 srv_user.cdgo_usrio,
-                fecha_inicio.toLocaleDateString("en-CA"),
-                fecha_fin.toLocaleDateString("en-CA")
+                dayjs(fecha_inicio).format("YYYY-MM-DD"),
+                dayjs(fecha_fin).format("YYYY-MM-DD")
             );
             /* console.log(
                 srv_user.cdgo_usrio,
@@ -165,7 +166,7 @@ export const ListActividadesPage = () => {
                 <Grid grow>
                     <Grid.Col span={{ base: 6, md: 6, lg: 6 }}>
                         <DateInput
-                            valueFormat="DD-MM-YYYY"
+                            valueFormat="YYYY-MM-DD"
                             label="Fecha inicial"
                             placeholder="Registra la fecha"
                             {...form.getInputProps("fecha_inicio")}
@@ -173,7 +174,7 @@ export const ListActividadesPage = () => {
                     </Grid.Col>
                     <Grid.Col span={{ base: 6, md: 6, lg: 6 }}>
                         <DateInput
-                            valueFormat="DD-MM-YYYY"
+                            valueFormat="YYYY-MM-DD"
                             label="Fecha final"
                             placeholder="Registra la fecha"
                             {...form.getInputProps("fecha_fin")}
