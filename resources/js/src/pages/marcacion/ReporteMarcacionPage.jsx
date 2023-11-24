@@ -63,7 +63,7 @@ export const ReporteMarcacionPage = () => {
         startLoadMarcacionesUser(
             srv_user.cdgo_usrio,
             dayjs(fecha_inicio).format("YYYY-MM-DD"),
-            dayjs(fecha_inicio).format("YYYY-MM-DD")
+            dayjs(fecha_fin).format("YYYY-MM-DD")
         );
     };
 
@@ -72,7 +72,7 @@ export const ReporteMarcacionPage = () => {
         startExportPDFMarcacionUser(
             srv_user.cdgo_usrio,
             dayjs(fecha_inicio).format("YYYY-MM-DD"),
-            dayjs(fecha_inicio).format("YYYY-MM-DD")
+            dayjs(fecha_fin).format("YYYY-MM-DD")
         );
     };
 
