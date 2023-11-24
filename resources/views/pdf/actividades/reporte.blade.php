@@ -93,15 +93,16 @@
                 <td>{{ $actividades[0]->usuario }}</td>
             </tr>
 
-            <tr>
-                <td width="80px"><b>PARA:</b></td>
-                <td>
-                    {{ $actividades[0]->crgo_id === 5 ? 'González Cervantes Mónica Alexandra' : $actividades[0]->director }}
-                    <sub><i>{{ $actividades[0]->crgo_id === 5 ? 'DIRECTOR/A DE GESTIÓN DE TALENTO HUMANO' : $actividades[0]->cargo_director . ' DE ' . $actividades[0]->departamento }}</i></sub>
+            @if ($actividades[0]->crgo_id !== 5)
+                <tr>
+                    <td width="80px"><b>PARA:</b></td>
+                    <td>
+                        {{ $actividades[0]->director }}
+                        <sub><i>{{ $actividades[0]->cargo_director . ' DE ' . $actividades[0]->departamento }}</i></sub>
+                    </td>
 
-                </td>
-
-            </tr>
+                </tr>
+            @endif
             <tr>
                 <td width="80px"><b>ASUNTO:</b></td>
                 <td>{{ $title }}</td>
@@ -147,18 +148,20 @@
                 </td>
 
 
-                <td>
-                    <div class="align-item: right;">
-                        <p class="mb-5" style="font-size: 12px">Aprobado por:</p>
-                        <hr class="solid 2px margines">
-                        <p style="font-size: 14px">
-                            {{ $actividades[0]->crgo_id === 5 ? 'González Cervantes Mónica Alexandra' : $actividades[0]->director }}
-                        </p>
-                        <p style="font-size: 14px">
-                            {{ $actividades[0]->crgo_id === 5 ? 'DIRECTOR/A' : $actividades[0]->cargo_director }}
-                        </p>
-                    </div>
-                </td>
+                @if ($actividades[0]->crgo_id !== 5)
+                    <td>
+                        <div class="align-item: right;">
+                            <p class="mb-5" style="font-size: 12px">Aprobado por:</p>
+                            <hr class="solid 2px margines">
+                            <p style="font-size: 14px">
+                                {{ $actividades[0]->crgo_id === 5 ? 'González Cervantes Mónica Alexandra' : $actividades[0]->director }}
+                            </p>
+                            <p style="font-size: 14px">
+                                {{ $actividades[0]->crgo_id === 5 ? 'DIRECTOR/A' : $actividades[0]->cargo_director }}
+                            </p>
+                        </div>
+                    </td>
+                @endif
             </tr>
         </table>
     </div>
