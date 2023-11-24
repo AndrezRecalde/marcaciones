@@ -38,7 +38,7 @@ export const MarcacionSalida = ({
                     color={color}
                     radius="md"
                     onClick={handleBtnMarcacion}
-                    disabled={reg_salida !== 0 || new Date().toLocaleTimeString() < '12:00:00' ? 1 : reg_salida}
+                    disabled={reg_salida !== 0 || currentTime < '12:00:00' ? 1 : reg_salida}
                 >
                     {btnTitle}
                 </Button>
