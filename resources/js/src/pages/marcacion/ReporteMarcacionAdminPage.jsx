@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { Box, Button, Container, Grid, LoadingOverlay, rem } from "@mantine/core";
 import { useMaterialReactTable } from "material-react-table";
 import { BtnSubmit, MRTableContent, TitlePage } from "../../components";
@@ -31,7 +32,7 @@ export const ReporteMarcacionAdminPage = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         //console.log(fecha.toLocaleDateString("en-CA"));
-        startLoadMarcacionesAdmin(fecha.toLocaleDateString("en-CA"));
+        startLoadMarcacionesAdmin(dayjs(fecha).format("YYYY-MM-DD"));
     };
 
     const columns = useMemo(
@@ -67,7 +68,7 @@ export const ReporteMarcacionAdminPage = () => {
 
     const handleExportData = (e) => {
         e.preventDefault();
-        startExportExcelMarcacionesAdmin(fecha.toLocaleDateString("en-CA"));
+        startExportExcelMarcacionesAdmin(dayjs(fecha).format("YYYY-MM-DD"));
     };
 
     const table = useMaterialReactTable({

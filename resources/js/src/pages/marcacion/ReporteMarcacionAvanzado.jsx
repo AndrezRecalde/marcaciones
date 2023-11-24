@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import {
     Box,
     Button,
@@ -93,15 +94,15 @@ export const ReporteMarcacionAvanzado = () => {
         e.preventDefault();
         startLoadMarcacionesAdmin(
             null,
-            fecha_inicio.toLocaleDateString("en-CA"),
-            fecha_fin.toLocaleDateString("en-CA"),
+            dayjs(fecha_inicio).format("YYYY-MM-DD"),
+            dayjs(fecha_fin).format("YYYY-MM-DD"),
             cdgo_dprtmnto,
             cdgo_usrio,
         );
         console.log(
             null,
-            fecha_inicio.toLocaleDateString("en-CA"),
-            fecha_fin.toLocaleDateString("en-CA"),
+            dayjs(fecha_inicio).format("YYYY-MM-DD"),
+            dayjs(fecha_fin).format("YYYY-MM-DD"),
             cdgo_dprtmnto,
             cdgo_usrio,
         );
@@ -111,8 +112,8 @@ export const ReporteMarcacionAvanzado = () => {
         e.preventDefault();
         startExportExcelMarcacionesAdmin(
             null,
-            fecha_inicio.toLocaleDateString("en-CA"),
-            fecha_fin.toLocaleDateString("en-CA"),
+            dayjs(fecha_inicio).format("YYYY-MM-DD"),
+            dayjs(fecha_fin).format("YYYY-MM-DD"),
             cdgo_dprtmnto,
             cdgo_usrio,
         );

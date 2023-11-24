@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { useDispatch, useSelector } from "react-redux";
 import {
     onClearActividades,
@@ -49,8 +50,8 @@ export const useActividadStore = () => {
                 });
                 startLoadActividades(
                     actividad.cdgo_usrio,
-                    fecha_inicio.toLocaleDateString("en-CA"),
-                    fecha_fin.toLocaleDateString("en-CA")
+                    dayjs(fecha_inicio).format("YYYY-MM-DD"),
+                    dayjs(fecha_fin).format("YYYY-MM-DD")
                 );
                 setClearActivateActividad();
                 return;

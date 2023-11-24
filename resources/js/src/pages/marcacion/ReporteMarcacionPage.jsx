@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { useEffect, useMemo } from "react";
 import { Box, Button, Container, Grid, LoadingOverlay, rem } from "@mantine/core";
 import { BtnSubmit, MRTableContent, TitlePage } from "../../components";
@@ -61,8 +62,8 @@ export const ReporteMarcacionPage = () => {
         e.preventDefault();
         startLoadMarcacionesUser(
             srv_user.cdgo_usrio,
-            fecha_inicio.toLocaleDateString("en-CA"),
-            fecha_fin.toLocaleDateString("en-CA")
+            dayjs(fecha_inicio).format("YYYY-MM-DD"),
+            dayjs(fecha_inicio).format("YYYY-MM-DD")
         );
     };
 
@@ -70,8 +71,8 @@ export const ReporteMarcacionPage = () => {
         e.preventDefault();
         startExportPDFMarcacionUser(
             srv_user.cdgo_usrio,
-            fecha_inicio.toLocaleDateString("en-CA"),
-            fecha_fin.toLocaleDateString("en-CA")
+            dayjs(fecha_inicio).format("YYYY-MM-DD"),
+            dayjs(fecha_inicio).format("YYYY-MM-DD")
         );
     };
 
