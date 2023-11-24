@@ -18,7 +18,8 @@ import { ActividadForm } from "./actividad/ActividadForm";
 import { ModalActividad } from "./actividad/ModalActividad";
 
 /* Marcacion */
-import { MarcacionCard } from "./marcacion/MarcacionCard";
+import { MarcacionEntrada } from "./marcacion/MarcacionEntrada";
+import { MarcacionSalida } from "./marcacion/MarcacionSalida";
 
 /* Soporte */
 import { SoporteForm } from "./soporte/SoporteForm";
@@ -44,7 +45,8 @@ export {
     ModalActividad,
 
     /* Marcacion */
-    MarcacionCard,
+    MarcacionEntrada,
+    MarcacionSalida,
 
     /* Soporte */
     SoporteForm
