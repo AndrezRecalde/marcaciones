@@ -10,8 +10,6 @@ export const MarcacionSalida = ({
     btnTitle,
     currentTime
 }) => {
-    console.log(currentTime);
-    console.log(currentTime < '12:00:00')
     return (
         <Paper radius="md" withBorder className={classes.card} mt={30}>
             <ThemeIcon
@@ -40,7 +38,7 @@ export const MarcacionSalida = ({
                     color={color}
                     radius="md"
                     onClick={handleBtnMarcacion}
-                    disabled={reg_salida !== 0 || currentTime < '12:00:00' ? 1 : reg_salida}
+                    disabled={reg_salida !== 0 || new Date().getHours() < '12' ? 1 : reg_salida}
                 >
                     {btnTitle}
                 </Button>
