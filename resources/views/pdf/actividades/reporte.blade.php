@@ -113,9 +113,9 @@
             </tr>
         </table>
 
-        <p class="mt-3" style="text-align: justify;">El presente informe detalla las actividades realizadas durante el
-            periodo {{ $fecha_inicio }} hasta {{ $fecha_fin }}.
-            Estas actividades en las cuales me desempeñé en el marco de mis responsabilidades laborales estan alineadas
+        <p class="mt-3" style="text-align: justify;">El presente informe presenta un detalle de las actividades
+            realizadas durante el período {{ $fecha_inicio }} hasta {{ $fecha_fin }}.
+            Estas actividades en las cuales me desempeñé en el marco de mis responsabilidades laborales están alineadas
             con los objetivos establecidos del departamento de {{ $actividades[0]->departamento }}.
         </p>
         <p>A continuación, detallo las siguientes actividades realizadas: </p>
@@ -128,7 +128,7 @@
                 @foreach ($actividades as $actividad)
                     <tr>
                         <td width="150px">{{ $actividad->current_fecha }}</td>
-                        <td>{{ $actividad->actividad }}</td>
+                        <td style="text-align: justify;">{{ $actividad->actividad }}</td>
                     </tr>
                 @endforeach
             </table>
