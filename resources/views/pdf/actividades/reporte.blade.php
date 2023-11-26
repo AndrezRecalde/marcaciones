@@ -113,9 +113,9 @@
             </tr>
         </table>
 
-        <p class="mt-3" style="text-align: justify;">El presente informe presenta un detalle de las actividades
+        <p class="mt-3" style="text-align: justify;">El presente informe redacta un detalle de las actividades
             realizadas durante el período {{ $fecha_inicio }} hasta {{ $fecha_fin }}.
-            Estas actividades en las cuales me desempeñé en el marco de mis responsabilidades laborales están alineadas
+            Estas actividades, en las cuales me desempeñé en el marco de mis responsabilidades laborales, están alineadas
             con los objetivos establecidos del departamento de {{ $actividades[0]->departamento }}.
         </p>
         <p>A continuación, detallo las siguientes actividades realizadas: </p>
