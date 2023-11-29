@@ -71,6 +71,7 @@ class ActividadController extends Controller
                          u.crgo_id,
                          u.crgo as cargo_usuario,
                          d.nmbre_dprtmnto as departamento,
+                         d.id_empresa,
                          us.nmbre_usrio as director, us.crgo as cargo_director')
             ->join('usrios_sstma as u', 'u.cdgo_usrio', 'a.user_id')
             ->join('dprtmntos as d', 'd.cdgo_dprtmnto', 'u.cdgo_direccion')

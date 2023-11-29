@@ -66,7 +66,7 @@
         } */
     </style>
 
-    <title>{{ $title }}}</title>
+    <title>{{ $title }}</title>
 </head>
 
 <body>
@@ -81,11 +81,20 @@
 
     <main class="mb-5">
         <div class="text-center mb-3">
-            <img class="img-fluid" alt="logo" src={{ public_path('/assets/images/LogoTransparente.png') }}
-                height="380" width="320">
+            @if ($actividades[0]->id_empresa === 2)
+                <img class="img-fluid" alt="logo" src={{ public_path('/assets/images/LogoTransparente.png') }}
+                    height="380" width="320">
+            @else
+                <img class="img-fluid" alt="logo" src={{ public_path('/assets/images/logo_unamydesc.png') }}
+                    height="380" width="320">
+            @endif
         </div>
         <div class="text-center mb-3">
-            <b>GOBIERNO AUTÓNOMO DESCENTRALIZADO DE LA PROVINCIA DE ESMERALDAS</b>
+            @if ($actividades[0]->id_empresa === 2)
+                <b>GOBIERNO AUTÓNOMO DESCENTRALIZADO DE LA PROVINCIA DE ESMERALDAS</b>
+            @else
+                <b>UNIDAD DE ASISTENCIA MÉDICA Y DESARROLLO SOCIAL Y CULTURAL</b>
+            @endif
         </div>
         <table style="width:100%">
             <tr>
@@ -115,7 +124,8 @@
 
         <p class="mt-3" style="text-align: justify;">El presente informe redacta un detalle de las actividades
             realizadas durante el período {{ $fecha_inicio }} hasta {{ $fecha_fin }}.
-            Estas actividades, en las cuales me desempeñé en el marco de mis responsabilidades laborales, están alineadas
+            Estas actividades, en las cuales me desempeñé en el marco de mis responsabilidades laborales, están
+            alineadas
             con los objetivos establecidos del departamento de {{ $actividades[0]->departamento }}.
         </p>
         <p>A continuación, detallo las siguientes actividades realizadas: </p>
