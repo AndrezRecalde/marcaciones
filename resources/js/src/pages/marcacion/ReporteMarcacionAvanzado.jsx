@@ -2,23 +2,16 @@ import dayjs from "dayjs";
 import {
     Box,
     Button,
-    CloseButton,
-    Combobox,
     Container,
     Grid,
-    Group,
-    Input,
-    InputBase,
     LoadingOverlay,
-    ScrollArea,
-    Text,
+    Select,
     rem,
-    useCombobox,
 } from "@mantine/core";
 import { isNotEmpty, useForm } from "@mantine/form";
 import { IconDownload, IconSearch } from "@tabler/icons-react";
 import { useMaterialReactTable } from "material-react-table";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 import {
     useDepartamentoStore,
     useMarcacionStore,
@@ -41,8 +34,6 @@ export const ReporteMarcacionAvanzado = () => {
         useDepartamentoStore();
     const { usuarios, startLoadUsuarios, startClearUsuarios } =
         useUsuarioStore();
-    const [searchDepartamento, setSearchDepartamento] = useState("");
-    const [searchUser, setSearchUser] = useState("");
 
     const form = useForm({
         initialValues: {
@@ -56,6 +47,10 @@ export const ReporteMarcacionAvanzado = () => {
             fecha_fin: isNotEmpty("Por favor ingrese la fecha final"),
             cdgo_dprtmnto: isNotEmpty("Seleccione el departamento"),
         },
+        transformValues: (values) => ({
+            cdgo_dprtmnto: parseInt(values.cdgo_dprtmnto) || 0,
+            cdgo_usrio: parseInt(values.cdgo_usrio) || 0,
+        }),
     });
 
     const { fecha_inicio, fecha_fin, cdgo_usrio, cdgo_dprtmnto } = form.values;
@@ -97,16 +92,16 @@ export const ReporteMarcacionAvanzado = () => {
             null,
             dayjs(fecha_inicio).format("YYYY-MM-DD"),
             dayjs(fecha_fin).format("YYYY-MM-DD"),
-            cdgo_dprtmnto,
-            cdgo_usrio
+            parseInt(cdgo_dprtmnto),
+            parseInt(cdgo_usrio)
         );
-        /* console.log(
+        console.log(
             null,
             dayjs(fecha_inicio).format("YYYY-MM-DD"),
             dayjs(fecha_fin).format("YYYY-MM-DD"),
-            cdgo_dprtmnto,
-            cdgo_usrio
-        ); */
+            parseInt(cdgo_dprtmnto),
+            parseInt(cdgo_usrio)
+        );
     };
 
     const handleExportData = (e) => {
@@ -144,85 +139,24 @@ export const ReporteMarcacionAvanzado = () => {
     });
 
     useEffect(() => {
+        startLoadDepartamentos(srv_user.id_empresa);
+
+        return () => {
+            startClearDepartamentos();
+            startClearUsuarios();
+        };
+    }, []);
+
+    useEffect(() => {
+        form.setFieldValue("cdgo_usrio", null);
+        startLoadUsuarios(cdgo_dprtmnto);
+    }, [cdgo_dprtmnto]);
+
+    useEffect(() => {
         return () => {
             startClearMarcacion();
         };
     }, [fecha_inicio, fecha_fin, cdgo_usrio, cdgo_dprtmnto]);
-
-    const comboboxDep = useCombobox({
-        onDropdownClose: () => {
-            comboboxDep.resetSelectedOption();
-            setSearchDepartamento("");
-         },
-        onDropdownOpen: () => {
-            startLoadDepartamentos(srv_user.id_empresa);
-        },
-    });
-
-    const comboboxUser = useCombobox({
-        onDropdownClose: () => {
-            comboboxUser.resetSelectedOption();
-            setSearchUser("");
-         },
-        onDropdownOpen: () => {
-            startLoadUsuarios(cdgo_dprtmnto);
-        },
-    });
-
-    function SelectOptionDept({ nmbre_dprtmnto }) {
-        return (
-            <Group>
-                <div>
-                    <Text fz="sm" fw={500}>
-                        {nmbre_dprtmnto}
-                    </Text>
-                </div>
-            </Group>
-        );
-    }
-
-    function SelectOptionUser({ nmbre_usrio }) {
-        return (
-            <Group>
-                <div>
-                    <Text fz="sm" fw={500}>
-                        {nmbre_usrio}
-                    </Text>
-                </div>
-            </Group>
-        );
-    }
-
-    const selectedOptionD = departamentos.find(
-        (item) => item.cdgo_dprtmnto === cdgo_dprtmnto
-    );
-    const selectedOptionU = usuarios.find(
-        (item) => item.cdgo_usrio === cdgo_usrio
-    );
-
-    const optionsDep = departamentos
-        .filter((departamento) =>
-            departamento.nmbre_dprtmnto
-                .toLowerCase()
-                .includes(searchDepartamento.toLowerCase().trim())
-        )
-        .map((dep) => (
-            <Combobox.Option value={dep.cdgo_dprtmnto} key={dep.cdgo_dprtmnto}>
-                <SelectOptionDept {...dep} />
-            </Combobox.Option>
-        ));
-
-    const optionsUsers = usuarios
-        .filter((usuario) =>
-            usuario.nmbre_usrio
-                .toLowerCase()
-                .includes(searchUser.toLowerCase().trim())
-        )
-        .map((u) => (
-            <Combobox.Option value={u.cdgo_usrio} key={u.cdgo_usrio}>
-                <SelectOptionUser {...u} />
-            </Combobox.Option>
-        ));
 
     return (
         <Container size="md" my="md">
@@ -258,136 +192,36 @@ export const ReporteMarcacionAvanzado = () => {
                         />
                     </Grid.Col>
                     <Grid.Col span={{ base: 6, md: 6, lg: 6 }}>
-                        <Combobox
-                            store={comboboxDep}
-                            withinPortal={false}
-                            onOptionSubmit={(val) => {
-                                form.setFieldValue("cdgo_dprtmnto", val);
-                                form.setFieldValue("cdgo_usrio", null);
-                                comboboxDep.closeDropdown();
-                            }}
-                        >
-                            <Combobox.Target>
-                                <InputBase
-                                    component="button"
-                                    type="button"
-                                    pointer
-                                    rightSection={
-                                        cdgo_dprtmnto !== null ? (
-                                            <CloseButton
-                                                size="sm"
-                                                onMouseDown={(event) =>
-                                                    event.preventDefault()
-                                                }
-                                                onClick={() => {
-                                                    form.setFieldValue(
-                                                        "cdgo_dprtmnto",
-                                                        null
-                                                    );
-                                                    form.setFieldValue(
-                                                        "cdgo_usrio",
-                                                        null
-                                                    );
-                                                }}
-                                                aria-label="Clear value"
-                                            />
-                                        ) : (
-                                            <Combobox.Chevron />
-                                        )
-                                    }
-                                    onClick={() => comboboxDep.toggleDropdown()}
-                                    rightSectionPointerEvents={
-                                        cdgo_dprtmnto === null ? "none" : "all"
-                                    }
-                                    multiline
-                                    {...form.getInputProps("cdgo_dprtmnto")}
-                                >
-                                    {selectedOptionD ? (
-                                        <SelectOptionDept
-                                            {...selectedOptionD}
-                                        />
-                                    ) : (
-                                        <Input.Placeholder>
-                                            Selecciona el departamento
-                                        </Input.Placeholder>
-                                    )}
-                                </InputBase>
-                            </Combobox.Target>
-
-                            <Combobox.Dropdown>
-                                <Combobox.Search
-                                    value={searchDepartamento}
-                                    onChange={(event) =>
-                                        setSearchDepartamento(
-                                            event.currentTarget.value
-                                        )
-                                    }
-                                    placeholder="Búsqueda de departamento"
-                                />
-                                <Combobox.Options style={{ overflowY: "auto" }}>
-                                    <ScrollArea.Autosize
-                                        type="scroll"
-                                        mah={200}
-                                    >
-                                        {optionsDep}
-                                    </ScrollArea.Autosize>
-                                </Combobox.Options>
-                            </Combobox.Dropdown>
-                        </Combobox>
+                        <Select
+                            label="Departamento"
+                            placeholder="Selecciona el departamento"
+                            searchable
+                            clearable
+                            nothingFoundMessage="Nothing found..."
+                            data={departamentos.map((departamento) => {
+                                return {
+                                    label: departamento.nmbre_dprtmnto,
+                                    value: departamento.cdgo_dprtmnto.toString(),
+                                };
+                            })}
+                            {...form.getInputProps("cdgo_dprtmnto")}
+                        />
                     </Grid.Col>
                     <Grid.Col span={{ base: 6, md: 6, lg: 6 }}>
-                        <Combobox
-                            store={comboboxUser}
-                            withinPortal={false}
-                            onOptionSubmit={(val, options) => {
-                                form.setFieldValue("cdgo_usrio", val);
-                                comboboxUser.closeDropdown();
-                            }}
-                        >
-                            <Combobox.Target>
-                                <InputBase
-                                    component="button"
-                                    type="button"
-                                    pointer
-                                    rightSection={<Combobox.Chevron />}
-                                    onClick={() =>
-                                        comboboxUser.toggleDropdown()
-                                    }
-                                    rightSectionPointerEvents="none"
-                                    multiline
-                                >
-                                    {selectedOptionU ? (
-                                        <SelectOptionUser
-                                            {...selectedOptionU}
-                                        />
-                                    ) : (
-                                        <Input.Placeholder>
-                                            Selecciona el funcionario
-                                        </Input.Placeholder>
-                                    )}
-                                </InputBase>
-                            </Combobox.Target>
-
-                            <Combobox.Dropdown>
-                            <Combobox.Search
-                                    value={searchUser}
-                                    onChange={(event) =>
-                                        setSearchUser(
-                                            event.currentTarget.value
-                                        )
-                                    }
-                                    placeholder="Búsqueda de funcionario"
-                                />
-                                <Combobox.Options>
-                                    <ScrollArea.Autosize
-                                        type="scroll"
-                                        mah={200}
-                                    >
-                                        {optionsUsers}
-                                    </ScrollArea.Autosize>
-                                </Combobox.Options>
-                            </Combobox.Dropdown>
-                        </Combobox>
+                        <Select
+                            label="Funcionario"
+                            placeholder="Selecciona al funcionario"
+                            searchable
+                            clearable
+                            nothingFoundMessage="Nothing found..."
+                            data={usuarios.map((user) => {
+                                return {
+                                    label: user.nmbre_usrio,
+                                    value: user.cdgo_usrio.toString(),
+                                };
+                            })}
+                            {...form.getInputProps("cdgo_usrio")}
+                        />
                     </Grid.Col>
                     <Grid.Col span={{ base: 12, md: 12, lg: 12 }}>
                         <BtnSubmit
