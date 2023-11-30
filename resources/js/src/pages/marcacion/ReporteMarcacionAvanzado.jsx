@@ -41,6 +41,8 @@ export const ReporteMarcacionAvanzado = () => {
         useDepartamentoStore();
     const { usuarios, startLoadUsuarios, startClearUsuarios } =
         useUsuarioStore();
+    const [searchDepartamento, setSearchDepartamento] = useState("");
+    const [searchUser, setSearchUser] = useState("");
 
     const form = useForm({
         initialValues: {
@@ -53,7 +55,6 @@ export const ReporteMarcacionAvanzado = () => {
             fecha_inicio: isNotEmpty("Por favor ingrese la fecha inicial"),
             fecha_fin: isNotEmpty("Por favor ingrese la fecha final"),
             cdgo_dprtmnto: isNotEmpty("Seleccione el departamento"),
-
         },
     });
 
@@ -97,15 +98,15 @@ export const ReporteMarcacionAvanzado = () => {
             dayjs(fecha_inicio).format("YYYY-MM-DD"),
             dayjs(fecha_fin).format("YYYY-MM-DD"),
             cdgo_dprtmnto,
-            cdgo_usrio,
+            cdgo_usrio
         );
-        console.log(
+        /* console.log(
             null,
             dayjs(fecha_inicio).format("YYYY-MM-DD"),
             dayjs(fecha_fin).format("YYYY-MM-DD"),
             cdgo_dprtmnto,
-            cdgo_usrio,
-        );
+            cdgo_usrio
+        ); */
     };
 
     const handleExportData = (e) => {
@@ -115,7 +116,7 @@ export const ReporteMarcacionAvanzado = () => {
             dayjs(fecha_inicio).format("YYYY-MM-DD"),
             dayjs(fecha_fin).format("YYYY-MM-DD"),
             cdgo_dprtmnto,
-            cdgo_usrio,
+            cdgo_usrio
         );
     };
 
@@ -149,14 +150,20 @@ export const ReporteMarcacionAvanzado = () => {
     }, [fecha_inicio, fecha_fin, cdgo_usrio, cdgo_dprtmnto]);
 
     const comboboxDep = useCombobox({
-        onDropdownClose: () => comboboxDep.resetSelectedOption(),
+        onDropdownClose: () => {
+            comboboxDep.resetSelectedOption();
+            setSearchDepartamento("");
+         },
         onDropdownOpen: () => {
             startLoadDepartamentos(srv_user.id_empresa);
         },
     });
 
     const comboboxUser = useCombobox({
-        onDropdownClose: () => comboboxUser.resetSelectedOption(),
+        onDropdownClose: () => {
+            comboboxUser.resetSelectedOption();
+            setSearchUser("");
+         },
         onDropdownOpen: () => {
             startLoadUsuarios(cdgo_dprtmnto);
         },
@@ -193,20 +200,29 @@ export const ReporteMarcacionAvanzado = () => {
         (item) => item.cdgo_usrio === cdgo_usrio
     );
 
-    const optionsDep = departamentos.map((departamento) => (
-        <Combobox.Option
-            value={departamento.cdgo_dprtmnto}
-            key={departamento.cdgo_dprtmnto}
-        >
-            <SelectOptionDept {...departamento} />
-        </Combobox.Option>
-    ));
+    const optionsDep = departamentos
+        .filter((departamento) =>
+            departamento.nmbre_dprtmnto
+                .toLowerCase()
+                .includes(searchDepartamento.toLowerCase().trim())
+        )
+        .map((dep) => (
+            <Combobox.Option value={dep.cdgo_dprtmnto} key={dep.cdgo_dprtmnto}>
+                <SelectOptionDept {...dep} />
+            </Combobox.Option>
+        ));
 
-    const optionsUsers = usuarios.map((usuario) => (
-        <Combobox.Option value={usuario.cdgo_usrio} key={usuario.cdgo_usrio}>
-            <SelectOptionUser {...usuario} />
-        </Combobox.Option>
-    ));
+    const optionsUsers = usuarios
+        .filter((usuario) =>
+            usuario.nmbre_usrio
+                .toLowerCase()
+                .includes(searchUser.toLowerCase().trim())
+        )
+        .map((u) => (
+            <Combobox.Option value={u.cdgo_usrio} key={u.cdgo_usrio}>
+                <SelectOptionUser {...u} />
+            </Combobox.Option>
+        ));
 
     return (
         <Container size="md" my="md">
@@ -299,6 +315,15 @@ export const ReporteMarcacionAvanzado = () => {
                             </Combobox.Target>
 
                             <Combobox.Dropdown>
+                                <Combobox.Search
+                                    value={searchDepartamento}
+                                    onChange={(event) =>
+                                        setSearchDepartamento(
+                                            event.currentTarget.value
+                                        )
+                                    }
+                                    placeholder="Búsqueda de departamento"
+                                />
                                 <Combobox.Options style={{ overflowY: "auto" }}>
                                     <ScrollArea.Autosize
                                         type="scroll"
@@ -344,6 +369,15 @@ export const ReporteMarcacionAvanzado = () => {
                             </Combobox.Target>
 
                             <Combobox.Dropdown>
+                            <Combobox.Search
+                                    value={searchUser}
+                                    onChange={(event) =>
+                                        setSearchUser(
+                                            event.currentTarget.value
+                                        )
+                                    }
+                                    placeholder="Búsqueda de funcionario"
+                                />
                                 <Combobox.Options>
                                     <ScrollArea.Autosize
                                         type="scroll"
