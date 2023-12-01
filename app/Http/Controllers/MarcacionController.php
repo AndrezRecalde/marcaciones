@@ -73,6 +73,7 @@ class MarcacionController extends Controller
             ->join('usrios_sstma as u', 'u.cdgo_usrio', 'm.user_id')
             ->where('m.user_id', $request->user_id)
             ->whereBetween('m.fecha', [$request->fecha_inicio, $request->fecha_fin])
+            ->orderBy('m.fecha', 'DESC')
             ->get();
 
         if (sizeof($marcaciones) >= 1) {
@@ -96,6 +97,7 @@ class MarcacionController extends Controller
             ->departamento($request->cdgo_dprtmnto)
             ->usuario($request->cdgo_usrio)
             ->orderBy('u.nmbre_usrio', 'ASC')
+            ->orderBy('m.fecha', 'DESC')
             ->get();
 
         return response()->json(['status' => 'success', 'marcaciones' => $marcaciones], 200);

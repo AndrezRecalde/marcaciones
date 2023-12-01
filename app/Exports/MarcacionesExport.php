@@ -78,6 +78,7 @@ class MarcacionesExport implements FromCollection, WithHeadings, WithColumnWidth
             ->departamento($this->cdgo_dprtmnto)
             ->usuario($this->cdgo_usrio)
             ->orderBy('u.nmbre_usrio', 'ASC')
+            ->orderBy('m.fecha', 'DESC')
             ->get();
     }
 }
