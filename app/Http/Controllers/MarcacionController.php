@@ -91,12 +91,14 @@ class MarcacionController extends Controller
                          u.nmbre_usrio as usuario,
                          d.nmbre_dprtmnto as departamento')
             ->join('usrios_sstma as u', 'u.cdgo_usrio', 'm.user_id')
-            ->join('dprtmntos as d', 'd.cdgo_dprtmnto', 'u.cdgo_direccion')
+            ->join('dprtmntos as d', 'd.cdgo_dprtmnto', 'u.cdgo_direccion') //Es para usuario
             ->fecha($request->fecha)
             ->fechas($request->fecha_inicio, $request->fecha_fin)
             ->departamento($request->cdgo_dprtmnto)
             ->usuario($request->cdgo_usrio)
+            ->where('d.id_empresa', $request->id_empresa)
             ->orderBy('u.nmbre_usrio', 'ASC')
+            ->orderby('d.nmbre_dprtmnto', 'ASC')
             ->orderBy('m.fecha', 'DESC')
             ->get();
 
@@ -106,12 +108,48 @@ class MarcacionController extends Controller
     function exportExcelMarcacionesAdmin(Request $request)
     {
         return Excel::download(new MarcacionesExport(
+            $request->id_empresa,
             $request->fecha,
             $request->fecha_inicio,
             $request->fecha_fin,
             $request->cdgo_usrio,
             $request->cdgo_dprtmnto
         ), 'marcaciones.xlsx');
+    }
+
+    function exportPDFMarcacionesAdmin(Request $request)
+    {
+        $marcaciones = Marcacion::from('srv_marcaciones as m')
+            ->selectRaw('m.id, date_format(m.fecha, "%Y-%m-%d") as current_fecha,
+                         m.reg_entrada, m.reg_salida,
+                         u.nmbre_usrio as usuario,
+                         d.nmbre_dprtmnto as departamento')
+            ->join('usrios_sstma as u', 'u.cdgo_usrio', 'm.user_id')
+            ->join('dprtmntos as d', 'd.cdgo_dprtmnto', 'u.cdgo_direccion') //Es para usuario
+            ->fecha($request->fecha)
+            ->fechas($request->fecha_inicio, $request->fecha_fin)
+            ->departamento($request->cdgo_dprtmnto)
+            ->usuario($request->cdgo_usrio)
+            ->where('d.id_empresa', $request->id_empresa)
+            ->orderBy('u.nmbre_usrio', 'ASC')
+            ->orderby('d.nmbre_dprtmnto', 'ASC')
+            ->orderBy('m.fecha', 'DESC')
+            ->get();
+
+            if (sizeof($marcaciones) >= 1) {
+                $data = [
+                    'title' => 'Informe de reporte de marcaciones',
+                    'marcaciones' => $marcaciones,
+                    'fecha_inicio' => $request->fecha_inicio,
+                    'fecha_fin' => $request->fecha_fin
+                ];
+
+                $pdf = PDF::loadView('pdf.marcaciones.reporte_admin', $data);
+                return $pdf->download('marcaciones_admin.pdf');
+            } else {
+                return response()->json(['status' => 'error', 'msg' => 'No existen marcaciones registradas'], 500);
+            }
+
     }
 
     function exportPDFMarcacionForUser(Request $request)

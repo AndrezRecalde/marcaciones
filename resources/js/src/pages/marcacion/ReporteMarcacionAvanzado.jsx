@@ -1,15 +1,22 @@
 import dayjs from "dayjs";
 import {
+    ActionIcon,
     Box,
     Button,
     Container,
     Grid,
+    Group,
     LoadingOverlay,
     Select,
     rem,
 } from "@mantine/core";
 import { isNotEmpty, useForm } from "@mantine/form";
-import { IconDownload, IconSearch } from "@tabler/icons-react";
+import {
+    IconDownload,
+    IconFileTypePdf,
+    IconFileTypeXls,
+    IconSearch,
+} from "@tabler/icons-react";
 import { useMaterialReactTable } from "material-react-table";
 import { useEffect, useMemo } from "react";
 import {
@@ -28,6 +35,7 @@ export const ReporteMarcacionAvanzado = () => {
         loadPDF,
         startLoadMarcacionesAdmin,
         startExportExcelMarcacionesAdmin,
+        startExportPDFMarcacionesAdmin,
         startClearMarcacion,
     } = useMarcacionStore();
     const { departamentos, startLoadDepartamentos, startClearDepartamentos } =
@@ -45,7 +53,7 @@ export const ReporteMarcacionAvanzado = () => {
         validate: {
             fecha_inicio: isNotEmpty("Por favor ingrese la fecha inicial"),
             fecha_fin: isNotEmpty("Por favor ingrese la fecha final"),
-            cdgo_dprtmnto: isNotEmpty("Seleccione el departamento"),
+            //cdgo_dprtmnto: isNotEmpty("Seleccione el departamento"),
         },
         transformValues: (values) => ({
             cdgo_dprtmnto: parseInt(values.cdgo_dprtmnto) || 0,
@@ -89,24 +97,38 @@ export const ReporteMarcacionAvanzado = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         startLoadMarcacionesAdmin(
+            srv_user.id_empresa,
             null,
             dayjs(fecha_inicio).format("YYYY-MM-DD"),
             dayjs(fecha_fin).format("YYYY-MM-DD"),
             parseInt(cdgo_dprtmnto),
             parseInt(cdgo_usrio)
         );
-        console.log(
+        /* console.log(
             null,
             dayjs(fecha_inicio).format("YYYY-MM-DD"),
             dayjs(fecha_fin).format("YYYY-MM-DD"),
             parseInt(cdgo_dprtmnto),
             parseInt(cdgo_usrio)
+        ); */
+    };
+
+    const handleExportDataXls = (e) => {
+        e.preventDefault();
+        startExportExcelMarcacionesAdmin(
+            srv_user.id_empresa,
+            null,
+            dayjs(fecha_inicio).format("YYYY-MM-DD"),
+            dayjs(fecha_fin).format("YYYY-MM-DD"),
+            cdgo_dprtmnto,
+            cdgo_usrio
         );
     };
 
-    const handleExportData = (e) => {
+    const handleExportDataPdf = (e) => {
         e.preventDefault();
-        startExportExcelMarcacionesAdmin(
+        startExportPDFMarcacionesAdmin(
+            srv_user.id_empresa,
             null,
             dayjs(fecha_inicio).format("YYYY-MM-DD"),
             dayjs(fecha_fin).format("YYYY-MM-DD"),
@@ -119,22 +141,32 @@ export const ReporteMarcacionAvanzado = () => {
         columns,
         data: marcaciones,
         renderTopToolbarCustomActions: ({ table }) => (
-            <Box>
-                <Button
-                    //export all data that is currently in the table (ignore pagination, sorting, filtering, etc.)
-                    onClick={handleExportData}
-                    leftSection={
-                        <IconDownload
-                            style={{ width: rem(18), height: rem(18) }}
-                        />
-                    }
-                    color="green.8"
-                    size="xs"
-                    radius="sm"
+            <Group>
+                <ActionIcon
+                    size={40}
+                    variant="filled"
+                    color="teal.5"
+                    aria-label="Exportacion excel"
+                    onClick={handleExportDataXls}
                 >
-                    Exportar Excel
-                </Button>
-            </Box>
+                    <IconFileTypeXls
+                        stroke={2}
+                        style={{ width: rem(24), height: rem(24) }}
+                    />
+                </ActionIcon>
+                <ActionIcon
+                    size={40}
+                    variant="filled"
+                    color="red.7"
+                    aria-label="Exportacion pdf"
+                    onClick={handleExportDataPdf}
+                >
+                    <IconFileTypePdf
+                        stroke={2}
+                        style={{ width: rem(24), height: rem(24) }}
+                    />
+                </ActionIcon>
+            </Group>
         ),
     });
 

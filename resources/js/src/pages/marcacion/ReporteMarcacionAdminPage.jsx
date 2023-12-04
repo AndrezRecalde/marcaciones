@@ -1,20 +1,31 @@
 import dayjs from "dayjs";
-import { Box, Button, Container, Grid, LoadingOverlay, rem } from "@mantine/core";
+import {
+    ActionIcon,
+    Box,
+    Button,
+    Container,
+    Grid,
+    Group,
+    LoadingOverlay,
+    rem,
+} from "@mantine/core";
 import { useMaterialReactTable } from "material-react-table";
 import { BtnSubmit, MRTableContent, TitlePage } from "../../components";
 import { DateInput } from "@mantine/dates";
-import { IconDownload, IconSearch } from "@tabler/icons-react";
+import { IconDownload, IconFileTypePdf, IconFileTypeXls, IconSearch } from "@tabler/icons-react";
 import { useMarcacionStore } from "../../hooks";
 import { useEffect, useMemo } from "react";
 import { isNotEmpty, useForm } from "@mantine/form";
 
 export const ReporteMarcacionAdminPage = () => {
+    const srv_user = JSON.parse(localStorage.getItem("user_srvm"));
     const {
         startLoadMarcacionesAdmin,
         marcaciones,
         tableLoad,
         loadPDF,
         startExportExcelMarcacionesAdmin,
+        startExportPDFMarcacionesAdmin,
         startClearMarcacion,
     } = useMarcacionStore();
 
@@ -31,8 +42,10 @@ export const ReporteMarcacionAdminPage = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        //console.log(fecha.toLocaleDateString("en-CA"));
-        startLoadMarcacionesAdmin(dayjs(fecha).format("YYYY-MM-DD"));
+        startLoadMarcacionesAdmin(
+            srv_user.id_empresa,
+            dayjs(fecha).format("YYYY-MM-DD")
+        );
     };
 
     const columns = useMemo(
@@ -66,31 +79,47 @@ export const ReporteMarcacionAdminPage = () => {
         []
     );
 
-    const handleExportData = (e) => {
+    const handleExportDataXls = (e) => {
         e.preventDefault();
-        startExportExcelMarcacionesAdmin(dayjs(fecha).format("YYYY-MM-DD"));
+        startExportExcelMarcacionesAdmin(
+            srv_user.id_empresa,
+            dayjs(fecha).format("YYYY-MM-DD")
+        );
     };
+
+    const handleExportDataPdf = (e) => {
+        e.preventDefault();
+        startExportPDFMarcacionesAdmin(
+            srv_user.id_empresa,
+            dayjs(fecha).format("YYYY-MM-DD")
+        )
+        console.log('clic')
+    }
 
     const table = useMaterialReactTable({
         columns,
         data: marcaciones,
         renderTopToolbarCustomActions: ({ table }) => (
-            <Box>
-                <Button
-                    //export all data that is currently in the table (ignore pagination, sorting, filtering, etc.)
-                    onClick={handleExportData}
-                    leftSection={
-                        <IconDownload
-                            style={{ width: rem(18), height: rem(18) }}
-                        />
-                    }
-                    color="green.8"
-                    size="xs"
-                    radius="sm"
+            <Group>
+                <ActionIcon
+                    size={40}
+                    variant="filled"
+                    color="teal.5"
+                    aria-label="Exportacion excel"
+                    onClick={handleExportDataXls}
                 >
-                    Exportar Excel
-                </Button>
-            </Box>
+                    <IconFileTypeXls stroke={2} style={{ width: rem(24), height: rem(24) }} />
+                </ActionIcon>
+                <ActionIcon
+                    size={40}
+                    variant="filled"
+                    color="red.7"
+                    aria-label="Exportacion pdf"
+                    onClick={handleExportDataPdf}
+                >
+                    <IconFileTypePdf stroke={2} style={{ width: rem(24), height: rem(24) }} />
+                </ActionIcon>
+            </Group>
         ),
     });
 

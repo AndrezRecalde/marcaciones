@@ -12,10 +12,11 @@ use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 class MarcacionesExport implements FromCollection, WithHeadings, WithColumnWidths, WithStyles
 {
 
-    protected $fecha, $fecha_inicio, $fecha_fin, $cdgo_usrio, $cdgo_dprtmnto;
+    protected $id_empresa, $fecha, $fecha_inicio, $fecha_fin, $cdgo_usrio, $cdgo_dprtmnto;
 
-    public function __construct($fecha, $fecha_inicio, $fecha_fin, $cdgo_usrio, $cdgo_dprtmnto)
+    public function __construct($id_empresa, $fecha, $fecha_inicio, $fecha_fin, $cdgo_usrio, $cdgo_dprtmnto)
     {
+        $this->id_empresa = $id_empresa;
         $this->fecha = $fecha;
         $this->fecha_inicio = $fecha_inicio;
         $this->fecha_fin = $fecha_fin;
@@ -77,7 +78,9 @@ class MarcacionesExport implements FromCollection, WithHeadings, WithColumnWidth
             ->fechas($this->fecha_inicio, $this->fecha_fin)
             ->departamento($this->cdgo_dprtmnto)
             ->usuario($this->cdgo_usrio)
+            ->where('d.id_empresa', $this->id_empresa)
             ->orderBy('u.nmbre_usrio', 'ASC')
+            ->orderby('d.nmbre_dprtmnto', 'ASC')
             ->orderBy('m.fecha', 'DESC')
             ->get();
     }

@@ -80,17 +80,25 @@ export const useMarcacionStore = () => {
     };
 
     const startExportExcelMarcacionesAdmin = async (
+        id_empresa,
         fecha,
         fecha_inicio,
         fecha_fin,
         cdgo_dprtmnto,
-        cdgo_usrio,
+        cdgo_usrio
     ) => {
         try {
             dispatch(onLoadPDF(true));
             const response = await controlApi.post(
                 "/export/excel/marcaciones/admin",
-                { fecha, fecha_inicio, fecha_fin, cdgo_dprtmnto, cdgo_usrio },
+                {
+                    id_empresa,
+                    fecha,
+                    fecha_inicio,
+                    fecha_fin,
+                    cdgo_dprtmnto,
+                    cdgo_usrio,
+                },
                 { responseType: "blob" }
             );
             const url = window.URL.createObjectURL(
@@ -111,14 +119,16 @@ export const useMarcacionStore = () => {
     };
 
     const startLoadMarcacionesAdmin = async (
+        id_empresa,
         fecha,
         fecha_inicio,
         fecha_fin,
         cdgo_dprtmnto,
-        cdgo_usrio,
+        cdgo_usrio
     ) => {
         try {
             const { data } = await controlApi.post("/marcaciones/admin", {
+                id_empresa,
                 fecha,
                 fecha_inicio,
                 fecha_fin,
@@ -197,6 +207,48 @@ export const useMarcacionStore = () => {
         }
     };
 
+    const startExportPDFMarcacionesAdmin = async (
+        id_empresa,
+        fecha,
+        fecha_inicio,
+        fecha_fin,
+        cdgo_dprtmnto,
+        cdgo_usrio
+    ) => {
+        try {
+            dispatch(onLoadPDF(true));
+            const response = await controlApi.post(
+                "/export/pdf/marcaciones/admin",
+                {
+                    id_empresa,
+                    fecha,
+                    fecha_inicio,
+                    fecha_fin,
+                    cdgo_dprtmnto,
+                    cdgo_usrio,
+                },
+                { responseType: "blob" }
+            );
+            const url = window.URL.createObjectURL(
+                new Blob([response.data], { type: "application/pdf" })
+            );
+            window.open(url, "_blank");
+            dispatch(onLoadPDF(false));
+        } catch (error) {
+            console.log(error);
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: error.response.data.msg
+                    ? error.response.data.msg
+                    : error.response.data.msg
+                    ? error.response.data.errores
+                    : Object.values(error.response.data.errores),
+                confirmButtonColor: "#c81d11",
+            });
+        }
+    };
+
     const startClearMarcacion = () => {
         dispatch(onClearMarcacion());
     };
@@ -215,5 +267,6 @@ export const useMarcacionStore = () => {
         startLoadMarcacionesUser,
         startClearMarcacion,
         startExportPDFMarcacionUser,
+        startExportPDFMarcacionesAdmin
     };
 };

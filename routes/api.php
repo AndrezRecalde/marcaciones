@@ -41,8 +41,8 @@ Route::group(
         Route::post('/marcaciones/admin', [MarcacionController::class, 'getMarcacionesAdmin']);
         Route::post('/marcaciones/user', [MarcacionController::class, 'getMarcacionesForUser']);
         Route::post('/export/excel/marcaciones/admin', [MarcacionController::class, 'exportExcelMarcacionesAdmin']);
+        Route::post('/export/pdf/marcaciones/admin', [MarcacionController::class, 'exportPDFMarcacionesAdmin']);
         Route::post('/export/pdf/marcaciones/user', [MarcacionController::class, 'exportPDFMarcacionForUser']);
-
 
 
         Route::post('/get/actividades', [ActividadController::class, 'getActivForUserForDates']);
