@@ -88,7 +88,7 @@
                     <td>{{ $marcacion->usuario }}</td>
                     <td>{{ $marcacion->reg_entrada }}</td>
                     <td>{{ $marcacion->reg_salida }}</td>
-                    <td>{{ $marcacion->atraso === '00:00:00' ? '' : $marcacion->atraso }}</td>
+                    <td>{{ $marcacion->atraso <= '00:00:00' ? '' : $marcacion->atraso }}</td>
                     <td>{{ $marcacion->nombre_permiso }}</td>
                     <td>{{ $marcacion->departamento }}</td>
                 </tr>
