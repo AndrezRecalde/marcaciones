@@ -21,10 +21,6 @@
             padding: 8px;
         }
 
-        tr:nth-child(even) {
-            background-color: #dddddd;
-        }
-
         footer {
             position: fixed;
             bottom: -20px;
@@ -58,20 +54,34 @@
     </footer>
 
     <main class="mb-5">
-        <div class="text-center mb-3">
-            <img class="img-fluid" alt="logo" src={{ public_path('/assets/images/LogoTransparente.png') }}
-                height="380" width="320">
-        </div>
-        <div class="text-center mb-5">
-            <b>GOBIERNO AUTÓNOMO DESCENTRALIZADO DE LA PROVINCIA DE ESMERALDAS</b>
-        </div>
+        @if ($marcaciones[0]->id_empresa === 2)
+            <div class="text-center mb-3">
+                <img class="img-fluid" alt="logo" src={{ public_path('/assets/images/LogoTransparente.png') }}
+                    height="250" width="190">
+            </div>
+            <div class="text-center mb-5">
+                <b>GOBIERNO AUTÓNOMO DESCENTRALIZADO DE LA PROVINCIA DE ESMERALDAS</b>
+            </div>
+        @else
+            <div class="text-center mb-3">
+                <img class="img-fluid" alt="logo" src={{ public_path('/assets/images/logo_unamydesc.png') }}
+                    height="250" width="190">
+            </div>
+            <div class="text-center mb-5">
+                <b>UNIDAD DE ASISTENCIA MÉDICA Y DESARROLLO SOCIAL Y CULTURAL</b>
+            </div>
+        @endif
+
         <p> <b>FUNCIONARIO:</b> {{ $marcaciones[0]->usuario }} </p>
+        <p> <b>DEPARTAMENTO:</b> {{ $marcaciones[0]->departamento }} </p>
+
         <table style="width:100%" class="mt-5">
             <tr>
                 <th>Fecha</th>
                 <th>Hora de Entrada</th>
                 <th>Hora de Salida</th>
-                <th>Funcionario</th>
+                <th>Atrasos</th>
+                <th>Tipo Permiso</th>
             </tr>
             @foreach ($marcaciones as $marcacion)
                 <tr>
@@ -79,7 +89,8 @@
                     <td>{{ $marcacion->current_fecha }}</td>
                     <td>{{ $marcacion->reg_entrada }}</td>
                     <td>{{ $marcacion->reg_salida }}</td>
-                    <td>{{ $marcacion->usuario }}</td>
+                    <td>{{ $marcacion->atraso === '00:00:00' ? '' : $marcacion->atraso }}</td>
+                    <td>{{ $marcacion->nombre_permiso }}</td>
                 </tr>
             @endforeach
         </table>

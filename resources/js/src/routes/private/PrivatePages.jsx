@@ -2,6 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import { AppLayout } from "../../layouts";
 import {
     ActividadPage,
+    JustificacionPage,
     ListActividadesPage,
     MarcacionPage,
     ReporteMarcacionAdminPage,
@@ -26,6 +27,11 @@ export const PrivatePages = () => {
                 <Route
                     path="/reporte/avanzado/marcaciones/admin/tthh"
                     element={<ReporteMarcacionAvanzado />}
+                />
+
+                <Route
+                    path="/justificaciones/admin/tthh"
+                    element={<JustificacionPage />}
                 />
 
                 <Route path="/actividad" element={<ActividadPage />} />

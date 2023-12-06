@@ -22,6 +22,7 @@ export const MarcacionPage = () => {
         marcacion,
         startLoadMarcacionToday,
         startAddEntrada,
+        startAddSalida,
         startClearMarcacion,
         errores,
     } = useMarcacionStore();
@@ -38,8 +39,12 @@ export const MarcacionPage = () => {
 
     useEffect(() => {}, [marcacion]);
 
-    const handleBtnMarcacion = () => {
-        startAddEntrada(marcacion, srv_user.cdgo_usrio);
+    const handleBtnMarcacionEntrada = () => {
+        startAddEntrada(srv_user.cdgo_usrio);
+    };
+
+    const handleBtnMarcacionSalida = () => {
+        startAddSalida(srv_user.cdgo_usrio);
     };
 
     return (
@@ -65,7 +70,7 @@ export const MarcacionPage = () => {
                         reg_entrada={
                             marcacion?.reg_entrada ? marcacion?.reg_entrada : 0
                         }
-                        handleBtnMarcacion={handleBtnMarcacion}
+                        handleBtnMarcacion={handleBtnMarcacionEntrada}
                         btnTitle="Marcar entrada"
                     />
 
@@ -76,7 +81,7 @@ export const MarcacionPage = () => {
                         reg_salida={
                             marcacion?.reg_salida ? marcacion?.reg_salida : 0
                         }
-                        handleBtnMarcacion={handleBtnMarcacion}
+                        handleBtnMarcacion={handleBtnMarcacionSalida}
                         btnTitle="Marcar salida"
                         currentTime={currentTime}
                     />

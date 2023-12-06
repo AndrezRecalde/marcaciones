@@ -40,32 +40,17 @@ export const useMarcacionStore = () => {
         }
     };
 
-    const startAddEntrada = async (marcacion, user_id) => {
+    const startAddSalida = async (user_id) => {
         try {
-            if (marcacion === null) {
-                const { data } = await controlApi.post("/marcacion/entrada", {
-                    user_id,
-                });
-                //dispatch(onAddMarcacion(marcacion));
-                startLoadMarcacionToday(user_id);
-                Swal.fire({
-                    icon: "success",
-                    text: data.msg,
-                    showConfirmButton: true,
-                });
-                return;
-            }
-            const { data } = await controlApi.put(
-                `/marcacion/salida/${user_id}`,
-                marcacion
-            );
+            const { data } = await controlApi.post(`/marcacion/salida`, {
+                user_id,
+            });
             startLoadMarcacionToday(user_id);
             Swal.fire({
                 icon: "success",
                 text: data.msg,
                 showConfirmButton: true,
             });
-            //dispatch(onUpdateMarcacion(marcacion));
         } catch (error) {
             const mensaje = error.response.data.msg
                 ? error.response.data.msg
@@ -75,7 +60,31 @@ export const useMarcacionStore = () => {
                 ? error.response.data.message
                 : error;
             dispatch(onErrores(mensaje));
-            //console.log(error);
+            console.log(error);
+        }
+    };
+
+    const startAddEntrada = async (user_id) => {
+        try {
+            const { data } = await controlApi.post("/marcacion/entrada", {
+                user_id,
+            });
+            startLoadMarcacionToday(user_id);
+            Swal.fire({
+                icon: "success",
+                text: data.msg,
+                showConfirmButton: true,
+            });
+        } catch (error) {
+            const mensaje = error.response.data.msg
+                ? error.response.data.msg
+                : error.response.data.errores
+                ? Object.values(error.response.data.errores)
+                : error.response.data.message
+                ? error.response.data.message
+                : error;
+            dispatch(onErrores(mensaje));
+            console.log(error);
         }
     };
 
@@ -262,11 +271,12 @@ export const useMarcacionStore = () => {
 
         startLoadMarcacionToday,
         startAddEntrada,
+        startAddSalida,
         startExportExcelMarcacionesAdmin,
         startLoadMarcacionesAdmin,
         startLoadMarcacionesUser,
         startClearMarcacion,
         startExportPDFMarcacionUser,
-        startExportPDFMarcacionesAdmin
+        startExportPDFMarcacionesAdmin,
     };
 };

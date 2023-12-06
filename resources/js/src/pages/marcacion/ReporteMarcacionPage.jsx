@@ -1,11 +1,11 @@
 import dayjs from "dayjs";
 import { useEffect, useMemo } from "react";
-import { Box, Button, Container, Grid, LoadingOverlay, rem } from "@mantine/core";
+import { ActionIcon, Box, Container, Grid, LoadingOverlay, Text, rem } from "@mantine/core";
 import { BtnSubmit, MRTableContent, TitlePage } from "../../components";
 import { DateInput } from "@mantine/dates";
 import { isNotEmpty, useForm } from "@mantine/form";
 import { useMaterialReactTable } from "material-react-table";
-import { IconDownload, IconSearch } from "@tabler/icons-react";
+import { IconFileTypePdf, IconSearch } from "@tabler/icons-react";
 import { useMarcacionStore } from "../../hooks";
 
 export const ReporteMarcacionPage = () => {
@@ -40,19 +40,48 @@ export const ReporteMarcacionPage = () => {
                 size: 80,
             },
             {
-                accessorKey: "reg_entrada", //normal accessorKey
-                header: "Hora de Entrada",
-                size: 80,
-            },
-            {
-                accessorKey: "reg_salida",
-                header: "Hora de Salida",
-                size: 80,
-            },
-            {
                 accessorKey: "usuario",
-                header: "Empleado",
+                header: "Funcionario",
                 size: 100,
+            },
+            {
+                accessorFn: (row) => row.reg_entrada !== null ? row.reg_entrada : row.nombre_permiso !== null ? "Justificada" : null,
+                header: "Hora de Entrada",
+                size: 50,
+                Cell: ({ cell }) => (
+                    <Text
+                        size="sm"
+                        c={
+                            cell.row.original.reg_entrada > "08:01"
+                                ? "red.7"
+                                : "black"
+                        }
+                    >
+                        {cell.getValue()}
+                    </Text>
+                ),
+            },
+            {
+                accessorFn: (row) => row.reg_salida !== null ? row.reg_salida : row.nombre_permiso !== null ? "Justificada" : null,
+                header: "Hora de Salida",
+                size: 50,
+                Cell: ({ cell }) => (
+                    <Text
+                        size="sm"
+                        c={
+                            cell.row.original.reg_salida < "16:00"
+                                ? "red.7"
+                                : "black"
+                        }
+                    >
+                        {cell.getValue()}
+                    </Text>
+                ),
+            },
+            {
+                accessorKey: "nombre_permiso",
+                header: "Tipo Permiso",
+                size: 80,
             },
         ],
         []
@@ -81,20 +110,18 @@ export const ReporteMarcacionPage = () => {
         data: marcaciones,
         renderTopToolbarCustomActions: ({ table }) => (
             <Box>
-                <Button
-                    //export all data that is currently in the table (ignore pagination, sorting, filtering, etc.)
+                <ActionIcon
+                    size={40}
+                    variant="filled"
+                    color="red.7"
+                    aria-label="Exportacion pdf"
                     onClick={handleExportDataPDF}
-                    leftSection={
-                        <IconDownload
-                            style={{ width: rem(18), height: rem(18) }}
-                        />
-                    }
-                    color="red.8"
-                    size="xs"
-                    radius="sm"
                 >
-                    Exportar PDF
-                </Button>
+                    <IconFileTypePdf
+                        stroke={2}
+                        style={{ width: rem(24), height: rem(24) }}
+                    />
+                </ActionIcon>
             </Box>
         ),
     });

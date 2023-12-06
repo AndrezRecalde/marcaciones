@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Marcacion extends Model
 {
@@ -22,13 +23,17 @@ class Marcacion extends Model
         'fecha' => 'date',
     ];
 
-    static function create(array $attributes = [])
+    /* static function create(array $attributes = [])
     {
         $attributes['user_id'] = auth()->id();
 
         $marcacion = static::query()->create($attributes);
 
         return $marcacion;
+    } */
+
+    function justificaciones() : BelongsToMany {
+        return $this->belongsToMany(User::class, 'srv_justificaciones', 'srv_marcacion_id', 'user_id');
     }
 
     function scopeUsuario($query, $usuario)

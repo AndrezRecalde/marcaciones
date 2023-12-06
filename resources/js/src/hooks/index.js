@@ -13,6 +13,9 @@ import { useDepartamentoStore } from "./departamento/useDepartamentoStore";
 
 import { useUsuarioStore } from "./usuario/useUsuarioStore";
 
+import { useTipoPermisoStore } from "./permisos/useTipoPermisoStore";
+import { useUiTipoPermiso } from "./permisos/useUiTipoPermiso";
+
 export {
     useAuthStore,
     useMarcacionStore,
@@ -21,5 +24,7 @@ export {
     useDateTime,
     useSoporteStore,
     useDepartamentoStore,
-    useUsuarioStore
+    useUsuarioStore,
+    useTipoPermisoStore,
+    useUiTipoPermiso
 };

@@ -5,6 +5,8 @@ import { uiActividadSlice } from "./actividad/uiActividadSlice";
 import { soporteSlice } from "./soporte/soporteSlice";
 import { departamentoSlice } from "./departamento/departamentoSlice";
 import { usuarioSlice } from "./usuarios/usuarioSlice";
+import { tipoPermisoSlice } from "./permiso/tipoPermisoSlice";
+import { uiTipoPermisoSlice } from "./permiso/uiTipoPermisoSlice";
 import { store } from "./store";
 
 export {
@@ -15,6 +17,8 @@ export {
     departamentoSlice,
     usuarioSlice,
     soporteSlice,
+    tipoPermisoSlice,
+    uiTipoPermisoSlice,
 
     store
 }

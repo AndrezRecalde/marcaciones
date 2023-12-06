@@ -6,6 +6,7 @@ import { ReporteMarcacionAvanzado } from "./marcacion/ReporteMarcacionAvanzado";
 import { ActividadPage } from "./actividad/ActividadPage";
 import { ListActividadesPage } from "./actividad/ListActividadesPage";
 import { SoportePage } from "./soporte/SoportePage";
+import { JustificacionPage } from "./justificacion/JustificacionPage";
 
 export {
     AuthPage,
@@ -15,5 +16,6 @@ export {
     ReporteMarcacionAvanzado,
     ActividadPage,
     ListActividadesPage,
-    SoportePage
+    SoportePage,
+    JustificacionPage
 }

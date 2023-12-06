@@ -82,18 +82,21 @@
     <main class="mb-5">
         <div class="text-center mb-3">
             @if ($actividades[0]->id_empresa === 2)
-                <img class="img-fluid" alt="logo" src={{ public_path('/assets/images/LogoTransparente.png') }}
-                    height="380" width="320">
+                <div class="text-center mb-3">
+                    <img class="img-fluid" alt="logo" src={{ public_path('/assets/images/LogoTransparente.png') }}
+                        height="380" width="320">
+                </div>
+                <div class="text-center mb-5">
+                    <b>GOBIERNO AUTÓNOMO DESCENTRALIZADO DE LA PROVINCIA DE ESMERALDAS</b>
+                </div>
             @else
-                <img class="img-fluid" alt="logo" src={{ public_path('/assets/images/logo_unamydesc.png') }}
-                    height="380" width="320">
-            @endif
-        </div>
-        <div class="text-center mb-3">
-            @if ($actividades[0]->id_empresa === 2)
-                <b>GOBIERNO AUTÓNOMO DESCENTRALIZADO DE LA PROVINCIA DE ESMERALDAS</b>
-            @else
-                <b>UNIDAD DE ASISTENCIA MÉDICA Y DESARROLLO SOCIAL Y CULTURAL</b>
+                <div class="text-center mb-3">
+                    <img class="img-fluid" alt="logo" src={{ public_path('/assets/images/logo_unamydesc.png') }}
+                        height="380" width="320">
+                </div>
+                <div class="text-center mb-5">
+                    <b>UNIDAD DE ASISTENCIA MÉDICA Y DESARROLLO SOCIAL Y CULTURAL</b>
+                </div>
             @endif
         </div>
         <table style="width:100%">

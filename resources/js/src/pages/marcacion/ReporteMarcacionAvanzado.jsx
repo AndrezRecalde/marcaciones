@@ -2,29 +2,36 @@ import dayjs from "dayjs";
 import {
     ActionIcon,
     Box,
-    Button,
     Container,
     Grid,
     Group,
     LoadingOverlay,
+    Menu,
     Select,
+    Text,
     rem,
 } from "@mantine/core";
 import { isNotEmpty, useForm } from "@mantine/form";
 import {
-    IconDownload,
     IconFileTypePdf,
     IconFileTypeXls,
+    IconLayersSubtract,
     IconSearch,
 } from "@tabler/icons-react";
 import { useMaterialReactTable } from "material-react-table";
-import { useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo } from "react";
 import {
     useDepartamentoStore,
     useMarcacionStore,
+    useUiTipoPermiso,
     useUsuarioStore,
 } from "../../hooks";
-import { BtnSubmit, MRTableContent, TitlePage } from "../../components";
+import {
+    BtnSubmit,
+    MRTableContent,
+    ModalJustificacion,
+    TitlePage,
+} from "../../components";
 import { DateInput } from "@mantine/dates";
 
 export const ReporteMarcacionAvanzado = () => {
@@ -40,8 +47,15 @@ export const ReporteMarcacionAvanzado = () => {
     } = useMarcacionStore();
     const { departamentos, startLoadDepartamentos, startClearDepartamentos } =
         useDepartamentoStore();
-    const { usuarios, startLoadUsuarios, startClearUsuarios } =
-        useUsuarioStore();
+    const {
+        usuarios,
+        activateUsuario,
+        startLoadUsuarios,
+        setActivateUsuario,
+        startClearUsuarios,
+    } = useUsuarioStore();
+
+    const { modalActionTipoPermiso } = useUiTipoPermiso();
 
     const form = useForm({
         initialValues: {
@@ -71,18 +85,47 @@ export const ReporteMarcacionAvanzado = () => {
                 size: 80,
             },
             {
-                accessorKey: "reg_entrada", //normal accessorKey
-                header: "Hora de Entrada",
-                size: 80,
-            },
-            {
-                accessorKey: "reg_salida",
-                header: "Hora de Salida",
-                size: 80,
-            },
-            {
                 accessorKey: "usuario",
                 header: "Empleado",
+                size: 80,
+            },
+            {
+                accessorFn: (row) => row.nombre_permiso !== null || row.reg_entrada === null ? "Justificada" : row.reg_entrada,
+                header: "Hora de Entrada",
+                size: 50,
+                Cell: ({ cell }) => (
+                    <Text
+                        size="sm"
+                        c={
+                            cell.row.original.reg_entrada > "08:01"
+                                ? "red.7"
+                                : "black"
+                        }
+                    >
+                        {cell.getValue()}
+                    </Text>
+                ),
+            },
+            {
+                accessorFn: (row) => row.reg_salida !== null ? row.reg_salida : row.nombre_permiso !== null ? "Justificada" : null,
+                header: "Hora de Salida",
+                size: 50,
+                Cell: ({ cell }) => (
+                    <Text
+                        size="sm"
+                        c={
+                            cell.row.original.reg_salida < "16:00"
+                                ? "red.7"
+                                : "black"
+                        }
+                    >
+                        {cell.getValue()}
+                    </Text>
+                ),
+            },
+            {
+                accessorKey: "nombre_permiso",
+                header: "Tipo Permiso",
                 size: 80,
             },
             {
@@ -137,9 +180,19 @@ export const ReporteMarcacionAvanzado = () => {
         );
     };
 
+    const handleJustificacion = useCallback(
+        (selected) => {
+            setActivateUsuario(selected);
+            modalActionTipoPermiso(1);
+        },
+        [marcaciones]
+    );
+
     const table = useMaterialReactTable({
         columns,
         data: marcaciones,
+        initialState: { columnVisibility: { nombre_permiso: false } },
+        enableRowActions: true,
         renderTopToolbarCustomActions: ({ table }) => (
             <Group>
                 <ActionIcon
@@ -168,16 +221,33 @@ export const ReporteMarcacionAvanzado = () => {
                 </ActionIcon>
             </Group>
         ),
+        renderRowActionMenuItems: ({ closeMenu, row }) => [
+            <Menu key={0}>
+                <Menu.Item
+                    onClick={() => {
+                        // View profile logic...
+                        closeMenu();
+                        handleJustificacion(row.original);
+                    }}
+                    leftSection={
+                        <IconLayersSubtract
+                            style={{ width: rem(14), height: rem(14) }}
+                        />
+                    }
+                >
+                    Justificar
+                </Menu.Item>
+            </Menu>,
+        ],
     });
 
     useEffect(() => {
         startLoadDepartamentos(srv_user.id_empresa);
-
-        return () => {
-            startClearDepartamentos();
-            startClearUsuarios();
-        };
     }, []);
+
+    useEffect(() => {
+        startLoadUsuarios(cdgo_dprtmnto);
+    }, [activateUsuario]);
 
     useEffect(() => {
         form.setFieldValue("cdgo_usrio", null);
@@ -191,7 +261,7 @@ export const ReporteMarcacionAvanzado = () => {
     }, [fecha_inicio, fecha_fin, cdgo_usrio, cdgo_dprtmnto]);
 
     return (
-        <Container size="md" my="md">
+        <Container size="lg" my="md">
             <TitlePage
                 order={2}
                 size="h2"
@@ -266,6 +336,7 @@ export const ReporteMarcacionAvanzado = () => {
                 </Grid>
             </Box>
             {tableLoad ? <MRTableContent table={table} /> : null}
+            <ModalJustificacion />
         </Container>
     );
 };

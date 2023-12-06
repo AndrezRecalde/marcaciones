@@ -24,6 +24,10 @@ import { MarcacionSalida } from "./marcacion/MarcacionSalida";
 /* Soporte */
 import { SoporteForm } from "./soporte/SoporteForm";
 
+/* Justificacion */
+import { JustificacionForm } from "./justificacion/JustificacionForm";
+import { ModalJustificacion } from "./justificacion/ModalJustificacion";
+
 export {
     /* Elements */
     TitlePage,
@@ -49,5 +53,9 @@ export {
     MarcacionSalida,
 
     /* Soporte */
-    SoporteForm
+    SoporteForm,
+
+    /* Justificacion */
+    JustificacionForm,
+    ModalJustificacion
 }

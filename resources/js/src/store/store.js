@@ -1,6 +1,15 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { actividadSlice, authSlice, departamentoSlice, marcacionSlice, soporteSlice, uiActividadSlice, usuarioSlice } from "../store";
-
+import {
+    actividadSlice,
+    authSlice,
+    departamentoSlice,
+    marcacionSlice,
+    soporteSlice,
+    tipoPermisoSlice,
+    uiActividadSlice,
+    uiTipoPermisoSlice,
+    usuarioSlice,
+} from "../store";
 
 export const store = configureStore({
     reducer: {
@@ -10,11 +19,13 @@ export const store = configureStore({
         uiActividad: uiActividadSlice.reducer,
         soporte: soporteSlice.reducer,
         departamento: departamentoSlice.reducer,
-        usuario: usuarioSlice.reducer
+        usuario: usuarioSlice.reducer,
+        tipoPermiso: tipoPermisoSlice.reducer,
+        uiTipoPermiso: uiTipoPermisoSlice.reducer
     },
 
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
             serializableCheck: false,
-        })
+        }),
 });

@@ -1,7 +1,7 @@
 import dayjs from "dayjs";
 import { useCallback, useEffect, useMemo } from "react";
 import { useMaterialReactTable } from "material-react-table";
-import { Box, Button, Container, Grid, LoadingOverlay, Menu, rem } from "@mantine/core";
+import { ActionIcon, Box, Container, Grid, LoadingOverlay, Menu, rem } from "@mantine/core";
 import { isNotEmpty, useForm } from "@mantine/form";
 import { DateInput } from "@mantine/dates";
 import {
@@ -11,7 +11,7 @@ import {
     TitlePage,
 } from "../../components";
 import { useActividadStore, useUiActividad } from "../../hooks";
-import { IconDownload, IconEdit, IconSearch } from "@tabler/icons-react";
+import { IconEdit, IconFileTypePdf, IconSearch } from "@tabler/icons-react";
 
 export const ListActividadesPage = () => {
     const srv_user = JSON.parse(localStorage.getItem("user_srvm"));
@@ -110,20 +110,18 @@ export const ListActividadesPage = () => {
         enableRowActions: true,
         renderTopToolbarCustomActions: ({ table }) => (
             <Box>
-                <Button
-                    //export all data that is currently in the table (ignore pagination, sorting, filtering, etc.)
+                <ActionIcon
+                    size={40}
+                    variant="filled"
+                    color="red.7"
+                    aria-label="Exportacion pdf"
                     onClick={handleExportDataPDF}
-                    leftSection={
-                        <IconDownload
-                            style={{ width: rem(18), height: rem(18) }}
-                        />
-                    }
-                    color="red.8"
-                    size="xs"
-                    radius="sm"
                 >
-                    Exportar PDF
-                </Button>
+                    <IconFileTypePdf
+                        stroke={2}
+                        style={{ width: rem(24), height: rem(24) }}
+                    />
+                </ActionIcon>
             </Box>
         ),
         renderRowActionMenuItems: ({ closeMenu, row }) => [

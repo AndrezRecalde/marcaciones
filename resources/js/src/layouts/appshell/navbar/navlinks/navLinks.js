@@ -1,4 +1,9 @@
-import { IconCalendarCheck, IconDeviceDesktopCog, IconListCheck } from "@tabler/icons-react";
+import {
+    IconCalendarCheck,
+    IconDeviceDesktopCog,
+    IconLayersSubtract,
+    IconListCheck,
+} from "@tabler/icons-react";
 
 export const lFuncionarios = [
     {
@@ -23,9 +28,7 @@ export const lFuncionarios = [
         label: "Soporte Técnico",
         icon: IconDeviceDesktopCog,
         initiallyOpened: true,
-        links: [
-            { label: "Solicitar Soporte", link: "/soporte" },
-        ],
+        links: [{ label: "Solicitar Soporte", link: "/soporte" }],
     },
 ];
 
@@ -37,8 +40,26 @@ export const lFuncionarioTTHH = [
         links: [
             { label: "Marcación diaria", link: "/marcacion" },
             { label: "Reporte de Marcación", link: "/reporte/marcaciones" },
-            { label: "Reporte General", link: "/reporte/marcaciones/admin/tthh" },
-            { label: "Reporte Avanzado", link: "/reporte/avanzado/marcaciones/admin/tthh" },
+
+        ],
+    },
+    {
+        label: "Administración TTHH",
+        icon: IconLayersSubtract,
+        initiallyOpened: true,
+        links: [
+            {
+                label: "Reporte General",
+                link: "/reporte/marcaciones/admin/tthh",
+            },
+            {
+                label: "Reporte Avanzado",
+                link: "/reporte/avanzado/marcaciones/admin/tthh",
+            },
+            {
+                label: "Registrar justificación",
+                link: "/justificaciones/admin/tthh",
+            },
         ],
     },
     {
@@ -54,8 +75,6 @@ export const lFuncionarioTTHH = [
         label: "Soporte Técnico",
         icon: IconDeviceDesktopCog,
         initiallyOpened: true,
-        links: [
-            { label: "Solicitar Soporte", link: "/soporte" },
-        ],
+        links: [{ label: "Solicitar Soporte", link: "/soporte" }],
     },
 ];

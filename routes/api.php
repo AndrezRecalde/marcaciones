@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\DepartamentoController;
 use App\Http\Controllers\IncidenciaController;
 use App\Http\Controllers\MarcacionController;
+use App\Http\Controllers\TPermisosController;
 use App\Http\Controllers\UsuarioController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -36,7 +37,7 @@ Route::group(
 
         Route::post('/marcacion/today', [MarcacionController::class, 'getMarcacionForUserToday']);
         Route::post('/marcacion/entrada', [MarcacionController::class, 'addEntrada']);
-        Route::put('/marcacion/salida/{user_id}', [MarcacionController::class, 'addSalida']);
+        Route::post('/marcacion/salida', [MarcacionController::class, 'addSalida']);
 
         Route::post('/marcaciones/admin', [MarcacionController::class, 'getMarcacionesAdmin']);
         Route::post('/marcaciones/user', [MarcacionController::class, 'getMarcacionesForUser']);
@@ -55,6 +56,11 @@ Route::group(
 
         Route::post('/departamentos', [DepartamentoController::class, 'getDepartamentos']);
         Route::post('/usuarios', [UsuarioController::class, 'getUsuariosForDepartamento']);
+
+
+        Route::post('/justificacion', [MarcacionController::class, 'addJustificacion']);
+
+        Route::get('/tipos/permisos', [TPermisosController::class, 'getTiposPermisos']);
 
 
     }

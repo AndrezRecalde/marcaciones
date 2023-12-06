@@ -7,9 +7,13 @@ use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithColumnWidths;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithStyles;
+use Maatwebsite\Excel\Concerns\WithEvents;
+use Maatwebsite\Excel\Concerns\WithDrawings;
+use PhpOffice\PhpSpreadsheet\Worksheet\Drawing;
+use Maatwebsite\Excel\Events\AfterSheet;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 
-class MarcacionesExport implements FromCollection, WithHeadings, WithColumnWidths, WithStyles
+class MarcacionesExport implements FromCollection, WithHeadings, WithColumnWidths, WithStyles, WithEvents, WithDrawings
 {
 
     protected $id_empresa, $fecha, $fecha_inicio, $fecha_fin, $cdgo_usrio, $cdgo_dprtmnto;
@@ -25,14 +29,28 @@ class MarcacionesExport implements FromCollection, WithHeadings, WithColumnWidth
 
     }
 
+    public function drawings()
+    {
+        $drawing = new Drawing();
+        $drawing->setName('Logo');
+        $drawing->setDescription('GADPE_LOGO');
+        $drawing->setPath(public_path('/assets/images/LogoTransparente.png'));
+        $drawing->setHeight(150);
+        $drawing->setCoordinates('J2');
+
+        return $drawing;
+    }
+
     function columnWidths(): array
     {
         return [
-            'A' => 40,
-            'B' => 50,
-            'C' => 40,
-            'D' => 40,
-            'E' => 80,
+            'A' => 20,
+            'B' => 30,
+            'C' => 20,
+            'D' => 20,
+            'E' => 20,
+            'F' => 30,
+            'G' => 30
         ];
     }
 
@@ -43,6 +61,8 @@ class MarcacionesExport implements FromCollection, WithHeadings, WithColumnWidth
         $sheet->getStyle('C1')->getFont()->setBold(true);
         $sheet->getStyle('D1')->getFont()->setBold(true);
         $sheet->getStyle('E1')->getFont()->setBold(true);
+        $sheet->getStyle('F1')->getFont()->setBold(true);
+        $sheet->getStyle('G1')->getFont()->setBold(true);
 
     }
 
@@ -56,7 +76,25 @@ class MarcacionesExport implements FromCollection, WithHeadings, WithColumnWidth
             'Empleado',
             'RegEntrada',
             'RegSalida',
+            'Atrasos',
+            'TipoPermiso',
             'Departamento'
+        ];
+    }
+
+     /**
+     * Write code on Method
+     *
+     * @return response()
+     */
+    public function registerEvents(): array
+    {
+        return [
+                AfterSheet::class => function(AfterSheet $event) {
+
+                $event->sheet->getDelegate()->getStyle('1')->getFont()->setSize(14);
+
+            },
         ];
     }
 
@@ -71,9 +109,13 @@ class MarcacionesExport implements FromCollection, WithHeadings, WithColumnWidth
             ->selectRaw('date_format(m.fecha, "%Y-%m-%d") as current_fecha,
                          u.nmbre_usrio as usuario,
                          m.reg_entrada, m.reg_salida,
-                         d.nmbre_dprtmnto as departamento')
+                         TIMEDIFF(m.reg_entrada, "08:00:00") as atraso,
+                         srvp.nombre_permiso,
+                         d.alias as departamento')
             ->join('usrios_sstma as u', 'u.cdgo_usrio', 'm.user_id')
             ->join('dprtmntos as d', 'd.cdgo_dprtmnto', 'u.cdgo_direccion')
+            ->leftJoin('srv_justificaciones as srvj', 'srvj.srv_marcacion_id', 'm.id')
+            ->leftJoin('srv_permisos as srvp', 'srvp.id', 'srvj.srv_permiso_id')
             ->fecha($this->fecha)
             ->fechas($this->fecha_inicio, $this->fecha_fin)
             ->departamento($this->cdgo_dprtmnto)
@@ -81,7 +123,7 @@ class MarcacionesExport implements FromCollection, WithHeadings, WithColumnWidth
             ->where('d.id_empresa', $this->id_empresa)
             ->orderBy('u.nmbre_usrio', 'ASC')
             ->orderby('d.nmbre_dprtmnto', 'ASC')
-            ->orderBy('m.fecha', 'DESC')
+            ->orderBy('m.fecha', 'ASC')
             ->get();
     }
 }

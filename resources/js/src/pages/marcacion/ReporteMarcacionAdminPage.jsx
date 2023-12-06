@@ -2,19 +2,20 @@ import dayjs from "dayjs";
 import {
     ActionIcon,
     Box,
-    Button,
     Container,
     Grid,
     Group,
     LoadingOverlay,
+    Menu,
+    Text,
     rem,
 } from "@mantine/core";
 import { useMaterialReactTable } from "material-react-table";
-import { BtnSubmit, MRTableContent, TitlePage } from "../../components";
+import { BtnSubmit, MRTableContent, ModalJustificacion, TitlePage } from "../../components";
 import { DateInput } from "@mantine/dates";
-import { IconDownload, IconFileTypePdf, IconFileTypeXls, IconSearch } from "@tabler/icons-react";
-import { useMarcacionStore } from "../../hooks";
-import { useEffect, useMemo } from "react";
+import { IconFileTypePdf, IconFileTypeXls, IconLayersSubtract, IconSearch } from "@tabler/icons-react";
+import { useMarcacionStore, useUiTipoPermiso, useUsuarioStore } from "../../hooks";
+import { useCallback, useEffect, useMemo } from "react";
 import { isNotEmpty, useForm } from "@mantine/form";
 
 export const ReporteMarcacionAdminPage = () => {
@@ -28,6 +29,11 @@ export const ReporteMarcacionAdminPage = () => {
         startExportPDFMarcacionesAdmin,
         startClearMarcacion,
     } = useMarcacionStore();
+
+    const { setActivateUsuario } =
+        useUsuarioStore();
+
+    const { modalActionTipoPermiso } = useUiTipoPermiso();
 
     const form = useForm({
         initialValues: {
@@ -56,18 +62,47 @@ export const ReporteMarcacionAdminPage = () => {
                 size: 80,
             },
             {
-                accessorKey: "reg_entrada", //normal accessorKey
-                header: "Hora de Entrada",
-                size: 80,
-            },
-            {
-                accessorKey: "reg_salida",
-                header: "Hora de Salida",
-                size: 80,
-            },
-            {
                 accessorKey: "usuario",
                 header: "Empleado",
+                size: 80,
+            },
+            {
+                accessorFn: (row) => row.reg_entrada !== null ? row.reg_entrada : row.nombre_permiso !== null ? "Justificada" : null,
+                header: "Hora de Entrada",
+                size: 80,
+                Cell: ({ cell }) => (
+                    <Text
+                        size="sm"
+                        c={
+                            cell.row.original.reg_entrada > "08:01"
+                                ? "red.7"
+                                : "black"
+                        }
+                    >
+                        {cell.getValue()}
+                    </Text>
+                ),
+            },
+            {
+                accessorFn: (row) => row.reg_salida !== null ? row.reg_salida : row.nombre_permiso !== null ? "Justificada" : null,
+                header: "Hora de Salida",
+                size: 80,
+                Cell: ({ cell }) => (
+                    <Text
+                        size="sm"
+                        c={
+                            cell.row.original.reg_salida < "16:00"
+                                ? "red.7"
+                                : "black"
+                        }
+                    >
+                        {cell.getValue()}
+                    </Text>
+                ),
+            },
+            {
+                accessorKey: "nombre_permiso",
+                header: "Tipo Permiso",
                 size: 80,
             },
             {
@@ -96,9 +131,19 @@ export const ReporteMarcacionAdminPage = () => {
         console.log('clic')
     }
 
+    const handleJustificacion = useCallback(
+        (selected) => {
+            setActivateUsuario(selected);
+            modalActionTipoPermiso(1);
+        },
+        [marcaciones]
+    );
+
     const table = useMaterialReactTable({
         columns,
         data: marcaciones,
+        initialState: { columnVisibility: { nombre_permiso: false } },
+        enableRowActions: true,
         renderTopToolbarCustomActions: ({ table }) => (
             <Group>
                 <ActionIcon
@@ -121,6 +166,22 @@ export const ReporteMarcacionAdminPage = () => {
                 </ActionIcon>
             </Group>
         ),
+        renderRowActionMenuItems: ({ closeMenu, row }) => [
+            <Menu key={0}>
+                <Menu.Item
+                    onClick={() => {
+                        // View profile logic...
+                        closeMenu();
+                        handleJustificacion(row.original);
+                    }}
+                    leftSection={
+                        <IconLayersSubtract style={{ width: rem(14), height: rem(14) }} />
+                    }
+                >
+                    Justificar
+                </Menu.Item>
+            </Menu>,
+        ],
     });
 
     useEffect(() => {
@@ -166,6 +227,7 @@ export const ReporteMarcacionAdminPage = () => {
                 </Grid>
             </Box>
             {tableLoad ? <MRTableContent table={table} /> : null}
+            <ModalJustificacion />
         </Container>
     );
 };
