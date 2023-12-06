@@ -118,7 +118,7 @@ class MarcacionController extends Controller
             ->departamento($request->cdgo_dprtmnto)
             ->usuario($request->cdgo_usrio)
             ->where('d.id_empresa', $request->id_empresa)
-            ->orderBy('u.nmbre_usrio', 'ASC')
+            //->orderBy('u.nmbre_usrio', 'ASC')
             ->orderby('d.nmbre_dprtmnto', 'ASC')
             ->orderBy('m.fecha', 'DESC')
             ->get();
@@ -157,7 +157,7 @@ class MarcacionController extends Controller
             ->departamento($request->cdgo_dprtmnto)
             ->usuario($request->cdgo_usrio)
             ->where('d.id_empresa', $request->id_empresa)
-            ->orderBy('u.nmbre_usrio', 'ASC')
+            //->orderBy('u.nmbre_usrio', 'ASC')
             ->orderby('d.nmbre_dprtmnto', 'ASC')
             ->orderBy('m.fecha', 'ASC')
             ->get();

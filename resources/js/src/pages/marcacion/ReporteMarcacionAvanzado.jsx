@@ -90,7 +90,10 @@ export const ReporteMarcacionAvanzado = () => {
                 size: 80,
             },
             {
-                accessorFn: (row) => row.nombre_permiso !== null || row.reg_entrada === null ? "Justificada" : row.reg_entrada,
+                accessorFn: (row) =>
+                    row.nombre_permiso !== null || row.reg_entrada === null
+                        ? "Justificada"
+                        : row.reg_entrada,
                 header: "Hora de Entrada",
                 size: 50,
                 Cell: ({ cell }) => (
@@ -107,7 +110,12 @@ export const ReporteMarcacionAvanzado = () => {
                 ),
             },
             {
-                accessorFn: (row) => row.reg_salida !== null ? row.reg_salida : row.nombre_permiso !== null ? "Justificada" : null,
+                accessorFn: (row) =>
+                    row.reg_salida !== null
+                        ? row.reg_salida
+                        : row.nombre_permiso !== null
+                        ? "Justificada"
+                        : null,
                 header: "Hora de Salida",
                 size: 50,
                 Cell: ({ cell }) => (

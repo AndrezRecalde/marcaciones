@@ -11,10 +11,24 @@ import {
     rem,
 } from "@mantine/core";
 import { useMaterialReactTable } from "material-react-table";
-import { BtnSubmit, MRTableContent, ModalJustificacion, TitlePage } from "../../components";
+import {
+    BtnSubmit,
+    MRTableContent,
+    ModalJustificacion,
+    TitlePage,
+} from "../../components";
 import { DateInput } from "@mantine/dates";
-import { IconFileTypePdf, IconFileTypeXls, IconLayersSubtract, IconSearch } from "@tabler/icons-react";
-import { useMarcacionStore, useUiTipoPermiso, useUsuarioStore } from "../../hooks";
+import {
+    IconFileTypePdf,
+    IconFileTypeXls,
+    IconLayersSubtract,
+    IconSearch,
+} from "@tabler/icons-react";
+import {
+    useMarcacionStore,
+    useUiTipoPermiso,
+    useUsuarioStore,
+} from "../../hooks";
 import { useCallback, useEffect, useMemo } from "react";
 import { isNotEmpty, useForm } from "@mantine/form";
 
@@ -30,8 +44,7 @@ export const ReporteMarcacionAdminPage = () => {
         startClearMarcacion,
     } = useMarcacionStore();
 
-    const { setActivateUsuario } =
-        useUsuarioStore();
+    const { setActivateUsuario } = useUsuarioStore();
 
     const { modalActionTipoPermiso } = useUiTipoPermiso();
 
@@ -67,7 +80,10 @@ export const ReporteMarcacionAdminPage = () => {
                 size: 80,
             },
             {
-                accessorFn: (row) => row.reg_entrada !== null ? row.reg_entrada : row.nombre_permiso !== null ? "Justificada" : null,
+                accessorFn: (row) =>
+                    row.nombre_permiso !== null || row.reg_entrada === null
+                        ? "Justificada"
+                        : row.reg_entrada,
                 header: "Hora de Entrada",
                 size: 80,
                 Cell: ({ cell }) => (
@@ -84,7 +100,12 @@ export const ReporteMarcacionAdminPage = () => {
                 ),
             },
             {
-                accessorFn: (row) => row.reg_salida !== null ? row.reg_salida : row.nombre_permiso !== null ? "Justificada" : null,
+                accessorFn: (row) =>
+                    row.reg_salida !== null
+                        ? row.reg_salida
+                        : row.nombre_permiso !== null
+                        ? "Justificada"
+                        : null,
                 header: "Hora de Salida",
                 size: 80,
                 Cell: ({ cell }) => (
@@ -127,9 +148,8 @@ export const ReporteMarcacionAdminPage = () => {
         startExportPDFMarcacionesAdmin(
             srv_user.id_empresa,
             dayjs(fecha).format("YYYY-MM-DD")
-        )
-        console.log('clic')
-    }
+        );
+    };
 
     const handleJustificacion = useCallback(
         (selected) => {
@@ -153,7 +173,10 @@ export const ReporteMarcacionAdminPage = () => {
                     aria-label="Exportacion excel"
                     onClick={handleExportDataXls}
                 >
-                    <IconFileTypeXls stroke={2} style={{ width: rem(24), height: rem(24) }} />
+                    <IconFileTypeXls
+                        stroke={2}
+                        style={{ width: rem(24), height: rem(24) }}
+                    />
                 </ActionIcon>
                 <ActionIcon
                     size={40}
@@ -162,7 +185,10 @@ export const ReporteMarcacionAdminPage = () => {
                     aria-label="Exportacion pdf"
                     onClick={handleExportDataPdf}
                 >
-                    <IconFileTypePdf stroke={2} style={{ width: rem(24), height: rem(24) }} />
+                    <IconFileTypePdf
+                        stroke={2}
+                        style={{ width: rem(24), height: rem(24) }}
+                    />
                 </ActionIcon>
             </Group>
         ),
@@ -175,7 +201,9 @@ export const ReporteMarcacionAdminPage = () => {
                         handleJustificacion(row.original);
                     }}
                     leftSection={
-                        <IconLayersSubtract style={{ width: rem(14), height: rem(14) }} />
+                        <IconLayersSubtract
+                            style={{ width: rem(14), height: rem(14) }}
+                        />
                     }
                 >
                     Justificar

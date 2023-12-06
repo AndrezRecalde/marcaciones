@@ -60,7 +60,7 @@ export const useMarcacionStore = () => {
                 ? error.response.data.message
                 : error;
             dispatch(onErrores(mensaje));
-            console.log(error);
+            //console.log(error);
         }
     };
 
@@ -244,7 +244,7 @@ export const useMarcacionStore = () => {
             window.open(url, "_blank");
             dispatch(onLoadPDF(false));
         } catch (error) {
-            console.log(error);
+            //console.log(error);
             Swal.fire({
                 icon: "error",
                 title: "Oops...",

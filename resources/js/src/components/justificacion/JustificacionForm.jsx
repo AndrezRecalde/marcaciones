@@ -105,15 +105,6 @@ export const JustificacionForm = ({ disabled, form }) => {
             srv_permiso_id,
             detalle
         );
-        console.log(
-            dayjs(fecha_inicio).format("YYYY-MM-DD"),
-            hora_inicio,
-            dayjs(fecha_fin).format("YYYY-MM-DD"),
-            hora_fin,
-            cdgo_usrio,
-            srv_permiso_id,
-            detalle
-        );
         form.reset();
         modalActionTipoPermiso(0);
     };
