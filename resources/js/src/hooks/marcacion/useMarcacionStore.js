@@ -148,7 +148,6 @@ export const useMarcacionStore = () => {
             //console.log(data);
             const { marcaciones } = data;
             dispatch(onLoadMarcaciones(marcaciones));
-            console.log('entro');
         } catch (error) {
             Swal.fire({
                 icon: "error",
