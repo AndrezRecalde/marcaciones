@@ -109,6 +109,7 @@ export const JustificacionForm = ({ disabled, form }) => {
         );
         if (storageFields !== null) {
             const { fecha_inicio:f_i, fecha_fin:f_f, cdgo_dprtmnto: dept, cdgo_usrio: ur } = storageFields;
+            console.log('startLoadMarcaciones');
             startLoadMarcacionesAdmin(
                 srv_user.id_empresa,
                 null,
