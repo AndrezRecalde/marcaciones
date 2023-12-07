@@ -81,9 +81,11 @@ export const ReporteMarcacionAdminPage = () => {
             },
             {
                 accessorFn: (row) =>
-                    row.nombre_permiso !== null || row.reg_entrada === null
-                        ? "Justificada"
-                        : row.reg_entrada,
+                    row.nombre_permiso !== null
+                        ? "Justificado"
+                        : row.reg_entrada !== null
+                        ? row.reg_entrada
+                        : null,
                 header: "Hora de Entrada",
                 size: 80,
                 Cell: ({ cell }) => (
@@ -101,10 +103,10 @@ export const ReporteMarcacionAdminPage = () => {
             },
             {
                 accessorFn: (row) =>
-                    row.reg_salida !== null
+                    row.nombre_permiso !== null
+                        ? "Justificado"
+                        : row.reg_salida !== null
                         ? row.reg_salida
-                        : row.nombre_permiso !== null
-                        ? "Justificada"
                         : null,
                 header: "Hora de Salida",
                 size: 80,

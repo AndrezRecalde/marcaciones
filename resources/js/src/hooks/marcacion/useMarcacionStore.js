@@ -8,13 +8,14 @@ import {
     onLoadMarcaciones,
     onLoadPDF,
     onLoading,
+    onSavedStorageFields,
     //onUpdateMarcacion,
 } from "../../store/marcacion/marcacionSlice";
 
 import Swal from "sweetalert2";
 
 export const useMarcacionStore = () => {
-    const { isLoading, loadPDF, marcacion, marcaciones, tableLoad, errores } =
+    const { isLoading, loadPDF, marcacion, marcaciones, storageFields, tableLoad, errores } =
         useSelector((state) => state.marcacion);
     const dispatch = useDispatch();
 
@@ -258,6 +259,10 @@ export const useMarcacionStore = () => {
         }
     };
 
+    const startStorageFields = (seleccion) => {
+        dispatch(onSavedStorageFields({...seleccion}));
+    }
+
     const startClearMarcacion = () => {
         dispatch(onClearMarcacion());
     };
@@ -267,6 +272,7 @@ export const useMarcacionStore = () => {
         loadPDF,
         marcacion,
         marcaciones,
+        storageFields,
         tableLoad,
 
         startLoadMarcacionToday,
@@ -278,5 +284,6 @@ export const useMarcacionStore = () => {
         startClearMarcacion,
         startExportPDFMarcacionUser,
         startExportPDFMarcacionesAdmin,
+        startStorageFields
     };
 };

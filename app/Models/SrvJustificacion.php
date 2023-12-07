@@ -22,4 +22,18 @@ class SrvJustificacion extends Model
     ];
 
     public $timestamps = false;
+
+    function scopeUsuario($query, $user_id)
+    {
+        if ($user_id) {
+            return $query->where('srvj.user_id', $user_id);
+        }
+    }
+
+    function scopeFechas($query, $fecha_inicio, $fecha_fin)
+    {
+        if ($fecha_inicio) {
+            return $query->whereBetween('srvj.fecha', [$fecha_inicio, $fecha_fin]);
+        }
+    }
 }

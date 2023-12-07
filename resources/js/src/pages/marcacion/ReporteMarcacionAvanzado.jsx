@@ -43,6 +43,7 @@ export const ReporteMarcacionAvanzado = () => {
         startLoadMarcacionesAdmin,
         startExportExcelMarcacionesAdmin,
         startExportPDFMarcacionesAdmin,
+        startStorageFields,
         startClearMarcacion,
     } = useMarcacionStore();
     const { departamentos, startLoadDepartamentos, startClearDepartamentos } =
@@ -91,9 +92,11 @@ export const ReporteMarcacionAvanzado = () => {
             },
             {
                 accessorFn: (row) =>
-                    row.nombre_permiso !== null || row.reg_entrada === null
-                        ? "Justificada"
-                        : row.reg_entrada,
+                    row.nombre_permiso !== null
+                        ? "Justificado"
+                        : row.reg_entrada !== null
+                        ? row.reg_entrada
+                        : null,
                 header: "Hora de Entrada",
                 size: 50,
                 Cell: ({ cell }) => (
@@ -111,10 +114,10 @@ export const ReporteMarcacionAvanzado = () => {
             },
             {
                 accessorFn: (row) =>
-                    row.reg_salida !== null
+                    row.nombre_permiso !== null
+                        ? "Justificado"
+                        : row.reg_salida !== null
                         ? row.reg_salida
-                        : row.nombre_permiso !== null
-                        ? "Justificada"
                         : null,
                 header: "Hora de Salida",
                 size: 50,
@@ -155,6 +158,7 @@ export const ReporteMarcacionAvanzado = () => {
             parseInt(cdgo_dprtmnto),
             parseInt(cdgo_usrio)
         );
+        startStorageFields(form.values);
         /* console.log(
             null,
             dayjs(fecha_inicio).format("YYYY-MM-DD"),

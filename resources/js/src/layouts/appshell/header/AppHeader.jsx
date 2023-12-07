@@ -11,7 +11,7 @@ export const AppHeader = ({
 }) => {
     return (
         <Group h="100%" px="md" justify="space-between">
-            <Group>
+            <Group pl={10}>
                 <Image maw={170} radius="md" src={logo} alt="logo_image" />
                 <Burger
                     opened={mobileOpened}

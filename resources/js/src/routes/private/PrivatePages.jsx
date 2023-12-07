@@ -2,9 +2,11 @@ import { Route, Routes } from "react-router-dom";
 import { AppLayout } from "../../layouts";
 import {
     ActividadPage,
+    Forbidden,
     JustificacionPage,
     ListActividadesPage,
     MarcacionPage,
+    NotFound,
     ReporteMarcacionAdminPage,
     ReporteMarcacionAvanzado,
     ReporteMarcacionPage,
@@ -41,6 +43,10 @@ export const PrivatePages = () => {
                 />
 
                 <Route path="/soporte" element={<SoportePage />} />
+
+                <Route path="/forbidden" element={<Forbidden />} />
+
+                <Route path="*" element={<NotFound />} />
             </Routes>
         </AppLayout>
     );

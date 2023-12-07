@@ -5,6 +5,7 @@ import { BtnSubmit } from "../../components";
 import { IconChevronsRight, IconClock } from "@tabler/icons-react";
 import {
     useDepartamentoStore,
+    useMarcacionStore,
     useTipoPermisoStore,
     useUiTipoPermiso,
     useUsuarioStore,
@@ -14,10 +15,11 @@ import { useEffect, useRef } from "react";
 export const JustificacionForm = ({ disabled, form }) => {
     const srv_user = JSON.parse(localStorage.getItem("user_srvm"));
     const { departamentos, startLoadDepartamentos } = useDepartamentoStore();
-    const { usuarios, activateUsuario, startLoadUsuarios } = useUsuarioStore();
+    const { usuarios, activateUsuario, setActivateUsuario, startLoadUsuarios } = useUsuarioStore();
     const { tipos, startLoadTiposPermisos, startAddJustificacion } =
         useTipoPermisoStore();
     const { modalActionTipoPermiso } = useUiTipoPermiso();
+    const { startLoadMarcacionesAdmin, storageFields } = useMarcacionStore();
 
     const ref_e = useRef(null);
     const ref_s = useRef(null);
@@ -105,6 +107,18 @@ export const JustificacionForm = ({ disabled, form }) => {
             srv_permiso_id,
             detalle
         );
+        if (storageFields !== null) {
+            const { fecha_inicio:f_i, fecha_fin:f_f, cdgo_dprtmnto: dept, cdgo_usrio: ur } = storageFields;
+            startLoadMarcacionesAdmin(
+                srv_user.id_empresa,
+                null,
+                dayjs(f_i).format("YYYY-MM-DD"),
+                dayjs(f_f).format("YYYY-MM-DD"),
+                parseInt(dept),
+                parseInt(ur)
+            );
+        }
+        setActivateUsuario(null);
         form.reset();
         modalActionTipoPermiso(0);
     };

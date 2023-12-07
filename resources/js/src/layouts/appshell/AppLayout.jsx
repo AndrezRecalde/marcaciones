@@ -2,8 +2,8 @@ import { AppShell, Button, ScrollArea } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { AppHeader, AppNavbar } from "../../layouts";
 import { IconChevronsLeft } from "@tabler/icons-react";
-import classes from "./navbar/NavbarModule/AppNavbar.module.css";
 import { useAuthStore } from "../../hooks";
+import classes from "./navbar/NavbarModule/AppNavbar.module.css";
 
 export const AppLayout = ({ children }) => {
     const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();

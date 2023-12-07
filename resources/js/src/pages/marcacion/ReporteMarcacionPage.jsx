@@ -1,6 +1,14 @@
 import dayjs from "dayjs";
 import { useEffect, useMemo } from "react";
-import { ActionIcon, Box, Container, Grid, LoadingOverlay, Text, rem } from "@mantine/core";
+import {
+    ActionIcon,
+    Box,
+    Container,
+    Grid,
+    LoadingOverlay,
+    Text,
+    rem,
+} from "@mantine/core";
 import { BtnSubmit, MRTableContent, TitlePage } from "../../components";
 import { DateInput } from "@mantine/dates";
 import { isNotEmpty, useForm } from "@mantine/form";
@@ -16,7 +24,7 @@ export const ReporteMarcacionPage = () => {
         loadPDF,
         startLoadMarcacionesUser,
         startExportPDFMarcacionUser,
-        startClearMarcacion
+        startClearMarcacion,
     } = useMarcacionStore();
 
     const form = useForm({
@@ -45,7 +53,12 @@ export const ReporteMarcacionPage = () => {
                 size: 100,
             },
             {
-                accessorFn: (row) => row.reg_entrada !== null ? row.reg_entrada : row.nombre_permiso !== null ? "Justificada" : null,
+                accessorFn: (row) =>
+                    row.nombre_permiso !== null
+                        ? "Justificado"
+                        : row.reg_entrada !== null
+                        ? row.reg_entrada
+                        : null,
                 header: "Hora de Entrada",
                 size: 50,
                 Cell: ({ cell }) => (
@@ -62,7 +75,12 @@ export const ReporteMarcacionPage = () => {
                 ),
             },
             {
-                accessorFn: (row) => row.reg_salida !== null ? row.reg_salida : row.nombre_permiso !== null ? "Justificada" : null,
+                accessorFn: (row) =>
+                    row.nombre_permiso !== null
+                        ? "Justificado"
+                        : row.reg_salida !== null
+                        ? row.reg_salida
+                        : null,
                 header: "Hora de Salida",
                 size: 50,
                 Cell: ({ cell }) => (
@@ -127,11 +145,10 @@ export const ReporteMarcacionPage = () => {
     });
 
     useEffect(() => {
-      return () => {
-        startClearMarcacion();
-      }
+        return () => {
+            startClearMarcacion();
+        };
     }, [fecha_inicio, fecha_fin]);
-
 
     return (
         <Container size="md" my="md">
@@ -140,7 +157,11 @@ export const ReporteMarcacionPage = () => {
                 component="form"
                 onSubmit={form.onSubmit((_, e) => handleSubmit(e))}
             >
-            <LoadingOverlay visible={loadPDF} zIndex={1000} overlayProps={{ radius: "sm", blur: 2 }} />
+                <LoadingOverlay
+                    visible={loadPDF}
+                    zIndex={1000}
+                    overlayProps={{ radius: "sm", blur: 2 }}
+                />
                 <Grid grow>
                     <Grid.Col span={{ base: 6, md: 6, lg: 6 }}>
                         <DateInput

@@ -268,15 +268,34 @@ class MarcacionController extends Controller
                     $index++;
                 }
 
-                return response()->json(['status' => 'success', 'msg' => $marcs[0]['user_id']], 201);
+                return response()->json(['status' => 'success', 'msg' => 'Se agrego con éxito la justificación'], 201);
             } else if (!is_null($marcaciones) && is_null($justificacion)) {  //! Permiso
                 $marcaciones->justificaciones()->sync($fechas);
-                return response()->json(['status' => 'success', 'msg' => 'Se agrego con éxito las justificación'], 201);
+                return response()->json(['status' => 'success', 'msg' => 'Se agrego con éxito la justificación'], 201);
             } else {
                 return response()->json(['status' => 'error', 'msg' => '¡Ya existe una justificación para este/estos días!'], 201);
             }
         } catch (\Throwable $th) {
             return response()->json(['status' => 'error', 'msg' => $th->getMessage()], 500);
         }
+    }
+
+    function getJustificaciones(Request $request): JsonResponse
+    {
+        $justificaciones = SrvJustificacion::from('srv_justificaciones as srvj')
+            ->selectRaw('srvj.id, srvj.fecha,
+                        u.cdgo_usrio,
+                        u.nmbre_usrio as usuario
+                        srvj.hora_inicio, srvj.hora_fin,
+                        srvp.id, srvp.nombre_permiso,
+                        srvj.detalle')
+            ->join('srv_permisos as srvp', 'srvp.id', 'srvj.serv_permiso_id')
+            ->join('usrios_sstma as u', 'u.cdgo_usrio', 'srvj.user_id')
+            ->join('dprtmntos as d', 'd.cdgo_dprtmnto', 'u.cdgo_direccion')
+            ->usuario($request->user_id)
+            ->fechas($request->fecha_inicio, $request->fecha_fin)
+            ->get();
+
+            return response()->json(['status' => 'success', 'justificaciones' => $justificaciones], 200);
     }
 }
