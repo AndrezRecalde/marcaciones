@@ -96,7 +96,7 @@ export const JustificacionForm = ({ disabled, form }) => {
         </ActionIcon>
     );
 
-    const handleSubmit = async(e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
         startAddJustificacion(
             dayjs(fecha_inicio).format("YYYY-MM-DD"),
@@ -109,7 +109,7 @@ export const JustificacionForm = ({ disabled, form }) => {
         );
         if (storageFields !== null) {
             const { fecha_inicio:fecha_i, fecha_fin:fecha_f, cdgo_dprtmnto: dept, cdgo_usrio: ur } = storageFields;
-            await startLoadMarcacionesAdmin(
+            startLoadMarcacionesAdmin(
                 srv_user.id_empresa,
                 null,
                 dayjs(fecha_i).format("YYYY-MM-DD"),
