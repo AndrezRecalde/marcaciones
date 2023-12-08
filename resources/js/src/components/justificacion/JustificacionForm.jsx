@@ -109,14 +109,16 @@ export const JustificacionForm = ({ disabled, form }) => {
         );
         if (storageFields !== null) {
             const { fecha_inicio:fecha_i, fecha_fin:fecha_f, cdgo_dprtmnto: dept, cdgo_usrio: ur } = storageFields;
-            startLoadMarcacionesAdmin(
-                srv_user.id_empresa,
-                null,
-                dayjs(fecha_i).format("YYYY-MM-DD"),
-                dayjs(fecha_f).format("YYYY-MM-DD"),
-                parseInt(dept),
-                parseInt(ur)
-            );
+            setTimeout(() => {
+                startLoadMarcacionesAdmin(
+                    srv_user.id_empresa,
+                    null,
+                    dayjs(fecha_i).format("YYYY-MM-DD"),
+                    dayjs(fecha_f).format("YYYY-MM-DD"),
+                    parseInt(dept),
+                    parseInt(ur)
+                );
+            }, 80);
         }
         setActivateUsuario(null);
         form.reset();
