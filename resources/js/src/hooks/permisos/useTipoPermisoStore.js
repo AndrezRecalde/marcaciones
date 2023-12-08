@@ -1,13 +1,14 @@
 import { useDispatch, useSelector } from "react-redux";
-import Swal from "sweetalert2";
-import controlApi from "../../api/controlApi";
 import {
     onClearTiposPermisos,
+    onErrores,
+    onLoadMessage,
     onLoadTiposPermisos,
 } from "../../store/permiso/tipoPermisoSlice";
+import controlApi from "../../api/controlApi";
 
 export const useTipoPermisoStore = () => {
-    const { tipos } = useSelector((state) => state.tipoPermiso);
+    const { tipos, msg, errores } = useSelector((state) => state.tipoPermiso);
     const dispatch = useDispatch();
 
     const startLoadTiposPermisos = async () => {
@@ -16,18 +17,8 @@ export const useTipoPermisoStore = () => {
             const { tipos } = data;
             dispatch(onLoadTiposPermisos(tipos));
         } catch (error) {
-            Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                confirmButtonColor: "#c81d11",
-                text: error.response.data.msg
-                    ? error.response.data.msg
-                    : error.response.data.errores
-                    ? Object.values(error.response.data.errores)
-                    : error.response.data.message
-                    ? error.response.data.message
-                    : error,
-            });
+            //console.log(error);
+            ExceptionMessageError(error);
         }
     };
 
@@ -50,32 +41,13 @@ export const useTipoPermisoStore = () => {
                 srv_permiso_id,
                 detalle,
             });
-            if (data.status !== "error") {
-                Swal.fire({
-                    icon: "success",
-                    text: data.msg,
-                    showConfirmButton: true,
-                });
-                return;
-            }
-            Swal.fire({
-                icon: "warning",
-                text: data.msg,
-                showConfirmButton: true,
-            });
+            dispatch(onLoadMessage(data));
+            setTimeout(() => {
+                dispatch(onLoadMessage(undefined));
+            }, 40);
         } catch (error) {
-            Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                confirmButtonColor: "#c81d11",
-                text: error.response.data.msg
-                    ? error.response.data.msg
-                    : error.response.data.errores
-                    ? Object.values(error.response.data.errores)
-                    : error.response.data.message
-                    ? error.response.data.message
-                    : error,
-            });
+            //console.log(error);
+            ExceptionMessageError(error);
         }
     };
 
@@ -83,8 +55,24 @@ export const useTipoPermisoStore = () => {
         dispatch(onClearTiposPermisos());
     };
 
+    const ExceptionMessageError = (error) => {
+        const mensaje = error.response.data.msg
+            ? error.response.data.msg
+            : error.response.data.errores
+            ? Object.values(error.response.data.errores)
+            : error.response.data.message
+            ? error.response.data.message
+            : error;
+        dispatch(onErrores(mensaje));
+        setTimeout(() => {
+            dispatch(onErrores(undefined));
+        }, 40);
+    };
+
     return {
         tipos,
+        msg,
+        errores,
 
         startLoadTiposPermisos,
         startAddJustificacion,

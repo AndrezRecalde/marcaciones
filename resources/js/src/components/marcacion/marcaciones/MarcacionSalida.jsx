@@ -1,5 +1,5 @@
 import { Button, Paper, Stack, Text, ThemeIcon, rem } from "@mantine/core";
-import classes from "./MarcacionCard/MarcacionCard.module.css";
+import classes from "../MarcacionCard/MarcacionCard.module.css";
 
 export const MarcacionSalida = ({
     icon: Icon,

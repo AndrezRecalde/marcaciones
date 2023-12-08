@@ -1,14 +1,17 @@
-import Swal from "sweetalert2";
 import controlApi from "../../api/controlApi";
 import { useDispatch, useSelector } from "react-redux";
-import { onLoading } from "../../store/soporte/soporteSlice";
+import { onErrores, onLoadMessage, onLoading } from "../../store/soporte/soporteSlice";
 
 export const useSoporteStore = () => {
-
-    const { isLoading } = useSelector(state => state.soporte);
+    const { isLoading, msg, errores } = useSelector((state) => state.soporte);
     const dispatch = useDispatch();
 
-    const startSendSoporte = async (detalle_incidencia, usu_alias, email, departamento) => {
+    const startSendSoporte = async (
+        detalle_incidencia,
+        usu_alias,
+        email,
+        departamento
+    ) => {
         try {
             dispatch(onLoading(true));
             const { data } = await controlApi.post("/incidencias/mail", {
@@ -17,31 +20,36 @@ export const useSoporteStore = () => {
                 email,
                 departamento,
             });
-            Swal.fire({
-                icon: "success",
-                text: data.msg,
-                showConfirmButton: true,
-            });
+            dispatch(onLoadMessage(data));
+            setTimeout(() => {
+                dispatch(onLoadMessage(undefined));
+            }, 40);
             dispatch(onLoading(false));
         } catch (error) {
             dispatch(onLoading(false));
-            Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                confirmButtonColor: "#c81d11",
-                text: error.response.data.msg
-                    ? error.response.data.msg
-                    : error.response.data.errores
-                    ? Object.values(error.response.data.errores)
-                    : error.response.data.message
-                    ? error.response.data.message
-                    : error,
-            });
+            ExceptionMessageError(error);
         }
+    };
+
+
+    const ExceptionMessageError = (error) => {
+        const mensaje = error.response.data.msg
+            ? error.response.data.msg
+            : error.response.data.errores
+            ? Object.values(error.response.data.errores)
+            : error.response.data.message
+            ? error.response.data.message
+            : error;
+        dispatch(onErrores(mensaje));
+        setTimeout(() => {
+            dispatch(onErrores(undefined));
+        }, 40);
     };
 
     return {
         isLoading,
+        msg,
+        errores,
         startSendSoporte,
     };
 };

@@ -1,3 +1,16 @@
+/* Forms Context */
+import {
+    EmployeeFormProvider,
+    useEmployeeFormContext,
+    useEmployeeForm,
+} from "./form-context/useEmployeeForm";
+
+import {
+    DatesFormProvider,
+    useDatesFormContext,
+    useDatesForm,
+} from "./form-context/useDatesForm";
+
 import { useAuthStore } from "./auth/useAuthStore";
 
 import { useMarcacionStore } from "./marcacion/useMarcacionStore";
@@ -16,7 +29,17 @@ import { useUsuarioStore } from "./usuario/useUsuarioStore";
 import { useTipoPermisoStore } from "./permisos/useTipoPermisoStore";
 import { useUiTipoPermiso } from "./permisos/useUiTipoPermiso";
 
+import { useReportMarcacion } from "./reports/useReportMarcacion";
+
 export {
+    EmployeeFormProvider,
+    useEmployeeFormContext,
+    useEmployeeForm,
+
+    DatesFormProvider,
+    useDatesFormContext,
+    useDatesForm,
+
     useAuthStore,
     useMarcacionStore,
     useActividadStore,
@@ -26,5 +49,7 @@ export {
     useDepartamentoStore,
     useUsuarioStore,
     useTipoPermisoStore,
-    useUiTipoPermiso
+    useUiTipoPermiso,
+
+    useReportMarcacion
 };

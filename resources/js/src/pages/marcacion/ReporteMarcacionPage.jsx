@@ -15,6 +15,7 @@ import { isNotEmpty, useForm } from "@mantine/form";
 import { useMaterialReactTable } from "material-react-table";
 import { IconFileTypePdf, IconSearch } from "@tabler/icons-react";
 import { useMarcacionStore } from "../../hooks";
+import Swal from "sweetalert2";
 
 export const ReporteMarcacionPage = () => {
     const srv_user = JSON.parse(localStorage.getItem("user_srvm"));
@@ -25,6 +26,8 @@ export const ReporteMarcacionPage = () => {
         startLoadMarcacionesUser,
         startExportPDFMarcacionUser,
         startClearMarcacion,
+        errores,
+        msg
     } = useMarcacionStore();
 
     const form = useForm({
@@ -143,6 +146,28 @@ export const ReporteMarcacionPage = () => {
             </Box>
         ),
     });
+
+    useEffect(() => {
+        if (msg !== undefined) {
+            Swal.fire({
+                icon: msg.status,
+                text: msg.msg,
+                showConfirmButton: true,
+            });
+            return;
+        }
+    }, [msg]);
+
+    useEffect(() => {
+        if (errores !== undefined) {
+            Swal.fire({
+                icon: "error",
+                text: errores,
+                showConfirmButton: true,
+            });
+            return;
+        }
+    }, [errores]);
 
     useEffect(() => {
         return () => {

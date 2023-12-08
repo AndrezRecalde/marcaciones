@@ -1,17 +1,28 @@
 import dayjs from "dayjs";
 import { useCallback, useEffect, useMemo } from "react";
 import { useMaterialReactTable } from "material-react-table";
-import { ActionIcon, Box, Container, Grid, LoadingOverlay, Menu, rem } from "@mantine/core";
-import { isNotEmpty, useForm } from "@mantine/form";
-import { DateInput } from "@mantine/dates";
 import {
+    Box,
+    Container,
+    LoadingOverlay,
+} from "@mantine/core";
+import { isNotEmpty, useForm } from "@mantine/form";
+import {
+    ActionReportPDF,
     BtnSubmit,
+    DateForm,
     MRTableContent,
+    MenuActionItems,
     ModalActividad,
     TitlePage,
 } from "../../components";
-import { useActividadStore, useUiActividad } from "../../hooks";
-import { IconEdit, IconFileTypePdf, IconSearch } from "@tabler/icons-react";
+import {
+    DatesFormProvider,
+    useActividadStore,
+    useUiActividad,
+} from "../../hooks";
+import { IconSearch } from "@tabler/icons-react";
+import Swal from "sweetalert2";
 
 export const ListActividadesPage = () => {
     const srv_user = JSON.parse(localStorage.getItem("user_srvm"));
@@ -25,6 +36,8 @@ export const ListActividadesPage = () => {
         startExportPDFActividades,
         startClearActividades,
         setActivateActividad,
+        errores,
+        msg
     } = useActividadStore();
 
     const form = useForm({
@@ -99,6 +112,28 @@ export const ListActividadesPage = () => {
     };
 
     useEffect(() => {
+        if (msg !== undefined) {
+            Swal.fire({
+                icon: msg.status,
+                text: msg.msg,
+                showConfirmButton: true,
+            });
+            return;
+        }
+    }, [msg]);
+
+    useEffect(() => {
+        if (errores !== undefined) {
+            Swal.fire({
+                icon: "error",
+                text: errores,
+                showConfirmButton: true,
+            });
+            return;
+        }
+    }, [errores]);
+
+    useEffect(() => {
         return () => {
             startClearActividades();
         };
@@ -109,36 +144,16 @@ export const ListActividadesPage = () => {
         data: actividades,
         enableRowActions: true,
         renderTopToolbarCustomActions: ({ table }) => (
-            <Box>
-                <ActionIcon
-                    size={40}
-                    variant="filled"
-                    color="red.7"
-                    aria-label="Exportacion pdf"
-                    onClick={handleExportDataPDF}
-                >
-                    <IconFileTypePdf
-                        stroke={2}
-                        style={{ width: rem(24), height: rem(24) }}
-                    />
-                </ActionIcon>
-            </Box>
+            <ActionReportPDF handleExportDataPDF={handleExportDataPDF} />
         ),
         renderRowActionMenuItems: ({ closeMenu, row }) => [
-            <Menu key={0}>
-                <Menu.Item
-                    onClick={() => {
-                        // View profile logic...
-                        closeMenu();
-                        handleEditActividad(row.original);
-                    }}
-                    leftSection={
-                        <IconEdit style={{ width: rem(14), height: rem(14) }} />
-                    }
-                >
-                    Editar
-                </Menu.Item>
-            </Menu>,
+            <MenuActionItems
+                key={0}
+                row={row}
+                closeMenu={closeMenu}
+                handle={handleEditActividad}
+                text="Editar"
+            />,
         ],
     });
 
@@ -151,43 +166,27 @@ export const ListActividadesPage = () => {
     return (
         <Container size="md" my="md">
             <TitlePage order={2} size="h2" title="Lista de actividades" />
-            <Box
-                component="form"
-                onSubmit={form.onSubmit((_, e) => handleSubmit(e))}
-            >
-                <LoadingOverlay
-                    visible={loadPDF}
-                    zIndex={1000}
-                    overlayProps={{ radius: "sm", blur: 2 }}
-                />
+            <DatesFormProvider form={form}>
+                <Box
+                    component="form"
+                    onSubmit={form.onSubmit((_, e) => handleSubmit(e))}
+                >
+                    <LoadingOverlay
+                        visible={loadPDF}
+                        zIndex={1000}
+                        overlayProps={{ radius: "sm", blur: 2 }}
+                    />
 
-                <Grid grow>
-                    <Grid.Col span={{ base: 6, md: 6, lg: 6 }}>
-                        <DateInput
-                            valueFormat="YYYY-MM-DD"
-                            label="Fecha inicial"
-                            placeholder="Registra la fecha"
-                            {...form.getInputProps("fecha_inicio")}
-                        />
-                    </Grid.Col>
-                    <Grid.Col span={{ base: 6, md: 6, lg: 6 }}>
-                        <DateInput
-                            valueFormat="YYYY-MM-DD"
-                            label="Fecha final"
-                            placeholder="Registra la fecha"
-                            {...form.getInputProps("fecha_fin")}
-                        />
-                    </Grid.Col>
-                    <Grid.Col span={{ base: 12, md: 12, lg: 12 }}>
-                        <BtnSubmit
-                            text="Buscar actividades"
-                            fullWidth={true}
-                            radius="sm"
-                            LeftSection={IconSearch}
-                        />
-                    </Grid.Col>
-                </Grid>
-            </Box>
+                    <DateForm />
+                    <BtnSubmit
+                        text="Revisar actividades"
+                        fullWidth={true}
+                        radius="sm"
+                        LeftSection={IconSearch}
+                    />
+                </Box>
+            </DatesFormProvider>
+
             {tableLoad ? <MRTableContent table={table} /> : null}
             <ModalActividad fecha_inicio={fecha_inicio} fecha_fin={fecha_fin} />
         </Container>

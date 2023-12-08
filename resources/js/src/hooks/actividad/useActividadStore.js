@@ -2,16 +2,24 @@ import dayjs from "dayjs";
 import { useDispatch, useSelector } from "react-redux";
 import {
     onClearActividades,
+    onErrores,
     onLoadActividades,
+    onLoadMessage,
     onLoadPDF,
     onSetActivateActividad,
 } from "../../store/actividad/actividadSlice";
 import controlApi from "../../api/controlApi";
-import Swal from "sweetalert2";
 
 export const useActividadStore = () => {
-    const { isLoading, loadPDF, actividades, activateActividad, tableLoad, errores } =
-        useSelector((state) => state.actividad);
+    const {
+        isLoading,
+        loadPDF,
+        actividades,
+        activateActividad,
+        tableLoad,
+        msg,
+        errores,
+    } = useSelector((state) => state.actividad);
 
     const dispatch = useDispatch();
 
@@ -26,12 +34,7 @@ export const useActividadStore = () => {
             dispatch(onLoadActividades(actividades));
         } catch (error) {
             //console.log(error);
-            Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                text: error.response ? error.response.data.msg : error,
-                confirmButtonColor: "#c81d11",
-            });
+            ExceptionMessageError(error);
         }
     };
 
@@ -42,12 +45,10 @@ export const useActividadStore = () => {
                     `/update/actividad/${actividad.id}`,
                     actividad
                 );
-                Swal.fire({
-                    icon: "success",
-                    text: data.msg,
-                    showConfirmButton: false,
-                    timer: 1000,
-                });
+                dispatch(onLoadMessage(data));
+                setTimeout(() => {
+                    dispatch(onLoadMessage(undefined));
+                }, 40);
                 startLoadActividades(
                     actividad.cdgo_usrio,
                     dayjs(fecha_inicio).format("YYYY-MM-DD"),
@@ -60,20 +61,13 @@ export const useActividadStore = () => {
                 "/create/actividad",
                 actividad
             );
-            Swal.fire({
-                icon: "success",
-                text: data.msg,
-                showConfirmButton: false,
-                timer: 1000,
-            });
+            dispatch(onLoadMessage(data));
+            setTimeout(() => {
+                dispatch(onLoadMessage(undefined));
+            }, 40);
         } catch (error) {
             //console.log(error);
-            Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                text: error.response ? error.response.data.msg : error,
-                confirmButtonColor: "#c81d11",
-            });
+            ExceptionMessageError(error);
         }
     };
 
@@ -100,16 +94,7 @@ export const useActividadStore = () => {
             dispatch(onLoadPDF(false));
         } catch (error) {
             //console.log(error);
-            Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                text: error.response.data.msg
-                    ? error.response.data.msg
-                    : error.response.data.msg
-                    ? error.response.data.errores
-                    : Object.values(error.response.data.errores),
-                confirmButtonColor: "#c81d11",
-            });
+            ExceptionMessageError(error);
         }
     };
 
@@ -125,12 +110,27 @@ export const useActividadStore = () => {
         dispatch(onClearActividades());
     };
 
+    const ExceptionMessageError = (error) => {
+        const mensaje = error.response.data.msg
+            ? error.response.data.msg
+            : error.response.data.errores
+            ? Object.values(error.response.data.errores)
+            : error.response.data.message
+            ? error.response.data.message
+            : error;
+        dispatch(onErrores(mensaje));
+        setTimeout(() => {
+            dispatch(onErrores(undefined));
+        }, 40);
+    };
+
     return {
         isLoading,
         loadPDF,
         actividades,
         activateActividad,
         tableLoad,
+        msg,
         errores,
 
         startAddActividad,

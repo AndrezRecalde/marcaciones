@@ -1,8 +1,12 @@
+import { useEffect } from "react";
 import { Card, Container } from "@mantine/core";
 import { JustificacionForm, TitlePage } from "../../components";
 import { useForm } from "@mantine/form";
+import { useTipoPermisoStore } from "../../hooks";
+import Swal from "sweetalert2";
 
 export const JustificacionPage = () => {
+    const { msg, errores } = useTipoPermisoStore();
 
     const form = useForm({
         initialValues: {
@@ -16,6 +20,29 @@ export const JustificacionPage = () => {
             detalle: ""
         },
     });
+
+    useEffect(() => {
+        if (msg !== undefined) {
+            Swal.fire({
+                icon: msg.status,
+                text: msg.msg,
+                showConfirmButton: true,
+            });
+            return;
+        }
+    }, [msg]);
+
+    useEffect(() => {
+        if (errores !== undefined) {
+            Swal.fire({
+                icon: "error",
+                title: "Contáctese con el administrador",
+                text: errores,
+                showConfirmButton: false,
+            });
+            return;
+        }
+    }, [errores]);
 
     return (
         <Container size="sm" my="md">

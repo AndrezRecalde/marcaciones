@@ -9,7 +9,7 @@ export const marcacionSlice = createSlice({
         marcaciones: [],
         storageFields: null,
         tableLoad: false,
-        msg: null,
+        msg: undefined,
         errores: undefined,
     },
     reducers: {
@@ -21,7 +21,6 @@ export const marcacionSlice = createSlice({
         },
         onLoadMarcacion: (state, { payload }) => {
             state.marcacion = payload;
-            state.msg = undefined;
             state.isLoading = false;
         },
         onLoadMarcaciones: (state, { payload }) => {
@@ -32,13 +31,18 @@ export const marcacionSlice = createSlice({
         onSavedStorageFields: (state, { payload }) => {
             state.storageFields = payload;
         },
+        onLoadMessage: (state, { payload }) => {
+            state.msg = payload;
+        },
         onClearMarcacion: (state) => {
-            state.marcacion = {};
-            state.marcacion = [];
-            state.storageFields = null;
-            state.tableLoad = false;
             state.isLoading = false;
             state.loadPDF = false;
+            state.marcacion = {};
+            state.marcaciones = [];
+            state.storageFields = null;
+            state.tableLoad = false;
+            state.msg = undefined;
+            state.errores = undefined;
         },
         onErrores: (state, { payload }) => {
             state.errores = payload;
@@ -57,6 +61,7 @@ export const {
     //onAddMarcacion,
     //onUpdateMarcacion,
     onSavedStorageFields,
+    onLoadMessage,
     onClearMarcacion,
     onErrores,
 } = marcacionSlice.actions;

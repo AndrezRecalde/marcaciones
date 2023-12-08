@@ -3,7 +3,7 @@ import { AuthPage } from "./auth/AuthPage";
 import { MarcacionPage } from "./marcacion/MarcacionPage";
 import { ReporteMarcacionPage } from "./marcacion/ReporteMarcacionPage";
 import { ReporteMarcacionAdminPage } from "./marcacion/ReporteMarcacionAdminPage";
-import { ReporteMarcacionAvanzado } from "./marcacion/ReporteMarcacionAvanzado";
+import { RMAdminPage } from "./marcacion/RMAdminPage";
 
 import { ActividadPage } from "./actividad/ActividadPage";
 import { ListActividadesPage } from "./actividad/ListActividadesPage";
@@ -20,7 +20,7 @@ export {
     MarcacionPage,
     ReporteMarcacionPage,
     ReporteMarcacionAdminPage,
-    ReporteMarcacionAvanzado,
+    RMAdminPage,
     ActividadPage,
     ListActividadesPage,
     SoportePage,

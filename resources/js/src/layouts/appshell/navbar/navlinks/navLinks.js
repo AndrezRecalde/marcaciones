@@ -48,12 +48,12 @@ export const lFuncionarioTTHH = [
         icon: IconLayersSubtract,
         initiallyOpened: true,
         links: [
-            {
+            /* {
                 label: "Reporte General",
                 link: "/reporte/marcaciones/admin/tthh",
-            },
+            }, */
             {
-                label: "Reporte Avanzado",
+                label: "Reporte Administrativo",
                 link: "/reporte/avanzado/marcaciones/admin/tthh",
             },
             {

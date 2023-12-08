@@ -1,8 +1,35 @@
+import { useEffect } from "react";
 import { Card, Container } from "@mantine/core";
 import { SoporteForm, StatAlert, TitlePage } from "../../components";
 import { IconInfoCircle } from "@tabler/icons-react";
+import { useSoporteStore } from "../../hooks";
+import Swal from "sweetalert2";
 
 export const SoportePage = () => {
+    const { msg, errores } = useSoporteStore();
+
+    useEffect(() => {
+        if (msg !== undefined) {
+            Swal.fire({
+                icon: msg.status,
+                text: msg.msg,
+                showConfirmButton: true,
+            });
+            return;
+        }
+    }, [msg]);
+
+    useEffect(() => {
+        if (errores !== undefined) {
+            Swal.fire({
+                icon: "error",
+                text: errores,
+                showConfirmButton: false,
+            });
+            return;
+        }
+    }, [errores]);
+
     return (
         <Container size="sm" my="md">
             <TitlePage order={2} size="h2" title="Solicitar soporte técnico" />

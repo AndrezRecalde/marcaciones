@@ -6,17 +6,24 @@ import {
     onErrores,
     onLoadMarcacion,
     onLoadMarcaciones,
+    onLoadMessage,
     onLoadPDF,
     onLoading,
     onSavedStorageFields,
     //onUpdateMarcacion,
 } from "../../store/marcacion/marcacionSlice";
 
-import Swal from "sweetalert2";
-
 export const useMarcacionStore = () => {
-    const { isLoading, loadPDF, marcacion, marcaciones, storageFields, tableLoad, errores } =
-        useSelector((state) => state.marcacion);
+    const {
+        isLoading,
+        loadPDF,
+        marcacion,
+        marcaciones,
+        storageFields,
+        tableLoad,
+        errores,
+        msg,
+    } = useSelector((state) => state.marcacion);
     const dispatch = useDispatch();
 
     const startLoadMarcacionToday = async (user_id) => {
@@ -30,14 +37,7 @@ export const useMarcacionStore = () => {
             dispatch(onLoadMarcacion(marcacion));
         } catch (error) {
             //console.log(error);
-            const mensaje = error.response.data.msg
-                ? error.response.data.msg
-                : error.response.data.errores
-                ? Object.values(error.response.data.errores)
-                : error.response.data.message
-                ? error.response.data.message
-                : error;
-            dispatch(onErrores(mensaje));
+            ExceptionMessageError(error);
         }
     };
 
@@ -46,21 +46,15 @@ export const useMarcacionStore = () => {
             const { data } = await controlApi.post(`/marcacion/salida`, {
                 user_id,
             });
-            startLoadMarcacionToday(user_id);
-            Swal.fire({
-                icon: "success",
-                text: data.msg,
-                showConfirmButton: true,
-            });
+            if (data.status === "success") {
+                startLoadMarcacionToday(user_id);
+            }
+            dispatch(onLoadMessage(data));
+            setTimeout(() => {
+                dispatch(onLoadMessage(undefined));
+            }, 40);
         } catch (error) {
-            const mensaje = error.response.data.msg
-                ? error.response.data.msg
-                : error.response.data.errores
-                ? Object.values(error.response.data.errores)
-                : error.response.data.message
-                ? error.response.data.message
-                : error;
-            dispatch(onErrores(mensaje));
+            ExceptionMessageError(error);
             //console.log(error);
         }
     };
@@ -70,22 +64,16 @@ export const useMarcacionStore = () => {
             const { data } = await controlApi.post("/marcacion/entrada", {
                 user_id,
             });
-            startLoadMarcacionToday(user_id);
-            Swal.fire({
-                icon: "success",
-                text: data.msg,
-                showConfirmButton: true,
-            });
+            if (data.status === "success") {
+                startLoadMarcacionToday(user_id);
+            }
+            dispatch(onLoadMessage(data));
+            setTimeout(() => {
+                dispatch(onLoadMessage(undefined));
+            }, 40);
         } catch (error) {
-            const mensaje = error.response.data.msg
-                ? error.response.data.msg
-                : error.response.data.errores
-                ? Object.values(error.response.data.errores)
-                : error.response.data.message
-                ? error.response.data.message
-                : error;
-            dispatch(onErrores(mensaje));
-            console.log(error);
+            ExceptionMessageError(error);
+            //console.log(error);
         }
     };
 
@@ -119,12 +107,7 @@ export const useMarcacionStore = () => {
             window.open(url, "_blank");
             dispatch(onLoadPDF(false));
         } catch (error) {
-            Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                text: error.response ? error.response.data.msg : error,
-                confirmButtonColor: "#c81d11",
-            });
+            ExceptionMessageError(error);
         }
     };
 
@@ -149,12 +132,7 @@ export const useMarcacionStore = () => {
             const { marcaciones } = data;
             dispatch(onLoadMarcaciones(marcaciones));
         } catch (error) {
-            Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                text: error.response ? error.response.data.msg : error,
-                confirmButtonColor: "#c81d11",
-            });
+            ExceptionMessageError(error);
         }
     };
 
@@ -172,12 +150,8 @@ export const useMarcacionStore = () => {
             const { marcaciones } = data;
             dispatch(onLoadMarcaciones(marcaciones));
         } catch (error) {
-            Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                text: error.response ? error.response.data.msg : error,
-                confirmButtonColor: "#c81d11",
-            });
+            //console.log(error)
+            ExceptionMessageError(error);
         }
     };
 
@@ -203,17 +177,7 @@ export const useMarcacionStore = () => {
             window.open(url, "_blank");
             dispatch(onLoadPDF(false));
         } catch (error) {
-            //console.log(error);
-            Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                text: error.response.data.msg
-                    ? error.response.data.msg
-                    : error.response.data.msg
-                    ? error.response.data.errores
-                    : Object.values(error.response.data.errores),
-                confirmButtonColor: "#c81d11",
-            });
+            ExceptionMessageError(error);
         }
     };
 
@@ -246,25 +210,30 @@ export const useMarcacionStore = () => {
             dispatch(onLoadPDF(false));
         } catch (error) {
             //console.log(error);
-            Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                text: error.response.data.msg
-                    ? error.response.data.msg
-                    : error.response.data.msg
-                    ? error.response.data.errores
-                    : Object.values(error.response.data.errores),
-                confirmButtonColor: "#c81d11",
-            });
+            ExceptionMessageError(error);
         }
     };
 
     const startStorageFields = (seleccion) => {
-        dispatch(onSavedStorageFields({...seleccion}));
-    }
+        dispatch(onSavedStorageFields({ ...seleccion }));
+    };
 
     const startClearMarcacion = () => {
         dispatch(onClearMarcacion());
+    };
+
+    const ExceptionMessageError = (error) => {
+        const mensaje = error.response.data.msg
+            ? error.response.data.msg
+            : error.response.data.errores
+            ? Object.values(error.response.data.errores)
+            : error.response.data.message
+            ? error.response.data.message
+            : error;
+        dispatch(onErrores(mensaje));
+        setTimeout(() => {
+            dispatch(onErrores(undefined));
+        }, 40);
     };
 
     return {
@@ -274,6 +243,8 @@ export const useMarcacionStore = () => {
         marcaciones,
         storageFields,
         tableLoad,
+        errores,
+        msg,
 
         startLoadMarcacionToday,
         startAddEntrada,
@@ -284,6 +255,6 @@ export const useMarcacionStore = () => {
         startClearMarcacion,
         startExportPDFMarcacionUser,
         startExportPDFMarcacionesAdmin,
-        startStorageFields
+        startStorageFields,
     };
 };

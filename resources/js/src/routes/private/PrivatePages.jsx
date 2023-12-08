@@ -7,8 +7,8 @@ import {
     ListActividadesPage,
     MarcacionPage,
     NotFound,
+    RMAdminPage,
     ReporteMarcacionAdminPage,
-    ReporteMarcacionAvanzado,
     ReporteMarcacionPage,
     SoportePage,
 } from "../../pages";
@@ -22,13 +22,13 @@ export const PrivatePages = () => {
                     path="/reporte/marcaciones"
                     element={<ReporteMarcacionPage />}
                 />
-                <Route
+                {/* <Route
                     path="/reporte/marcaciones/admin/tthh"
                     element={<ReporteMarcacionAdminPage />}
-                />
+                /> */}
                 <Route
                     path="/reporte/avanzado/marcaciones/admin/tthh"
-                    element={<ReporteMarcacionAvanzado />}
+                    element={<RMAdminPage />}
                 />
 
                 <Route

@@ -31,11 +31,11 @@ class MarcacionController extends Controller
     function addEntrada(Request $request): JsonResponse
     {
         try {
-            $marcacion_ = Marcacion::where('user_id', $request->user_id)
+            $_marcacion = Marcacion::where('user_id', $request->user_id)
                 ->where('fecha', Carbon::now()->format('Y-m-d'))
                 ->first();
 
-            if (!$marcacion_) {
+            if (!$_marcacion) {
                 $marcacion = new Marcacion();
                 $marcacion->fecha = Carbon::now()->format('Y-m-d');
                 $marcacion->reg_entrada = Carbon::now()->format('H:i:s');
@@ -44,7 +44,7 @@ class MarcacionController extends Controller
                 $marcacion->save();
                 return response()->json(['status' => 'success', 'msg' => 'Se ha registrado su marcación de entrada correctamente'], 201);
             } else {
-                return response()->json(['status' => 'error', 'msg' => 'La marcación de este día ya se encuentra registrada'], 200);
+                return response()->json(['status' => 'warning', 'msg' => 'La marcación de este día ya se encuentra registrada'], 200);
             }
         } catch (\Throwable $th) {
             return response()->json(['status' => 'error', 'msg' => $th->getMessage()], 500);
@@ -64,11 +64,11 @@ class MarcacionController extends Controller
                 $marcacion->reg_salida = Carbon::now()->format('H:i:s');
                 $marcacion->user_id = $request->user_id;
                 $marcacion->save();
-                return response()->json(['status' => 'success', 'msg' => 'Se ha registrado su marcación de salida correctamente 1'], 201);
+                return response()->json(['status' => 'success', 'msg' => 'Se ha registrado su marcación de salida correctamente'], 201);
             } else {
                 $marcacion->reg_salida = Carbon::now()->format('H:i:s');
                 $marcacion->update();
-                return response()->json(['status' => 'success', 'msg' => 'Se ha registrado su marcación de salida correctamente 2'], 201);
+                return response()->json(['status' => 'success', 'msg' => 'Se ha registrado su marcación de salida correctamente'], 201);
             }
         } catch (\Throwable $th) {
             return response()->json(['status' => 'error', 'msg' => $th->getMessage()], 500);
@@ -273,7 +273,7 @@ class MarcacionController extends Controller
                 $marcaciones->justificaciones()->sync($fechas);
                 return response()->json(['status' => 'success', 'msg' => 'Se agrego con éxito la justificación'], 201);
             } else {
-                return response()->json(['status' => 'error', 'msg' => '¡Ya existe una justificación para este/estos días!'], 201);
+                return response()->json(['status' => 'warning', 'msg' => '¡Ya existe una justificación para este/estos días!'], 201);
             }
         } catch (\Throwable $th) {
             return response()->json(['status' => 'error', 'msg' => $th->getMessage()], 500);

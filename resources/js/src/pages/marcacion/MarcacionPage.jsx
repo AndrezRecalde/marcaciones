@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { Container, SimpleGrid, Text, Title } from "@mantine/core";
 import { useDateTime, useMarcacionStore } from "../../hooks";
 import {
+    InformationList,
     Loading,
     MarcacionEntrada,
     MarcacionSalida,
@@ -10,10 +11,11 @@ import {
 import {
     IconDoorEnter,
     IconDoorExit,
-    IconInfoCircle,
+    IconInfoHexagon,
 } from "@tabler/icons-react";
 
 import classes from "./MarcacionModule/Marcacion.module.css";
+import Swal from "sweetalert2";
 
 export const MarcacionPage = () => {
     const srv_user = JSON.parse(localStorage.getItem("user_srvm"));
@@ -25,19 +27,42 @@ export const MarcacionPage = () => {
         startAddSalida,
         startClearMarcacion,
         errores,
+        msg,
     } = useMarcacionStore();
 
     const { currentDate, currentTime } = useDateTime();
 
     useEffect(() => {
         startLoadMarcacionToday(srv_user.cdgo_usrio);
-
         return () => {
             startClearMarcacion();
         };
     }, []);
 
     useEffect(() => {}, [marcacion]);
+
+    useEffect(() => {
+        if (msg !== undefined) {
+            Swal.fire({
+                icon: msg.status,
+                text: msg.msg,
+                showConfirmButton: true,
+            });
+            return;
+        }
+    }, [msg]);
+
+    useEffect(() => {
+        if (errores !== undefined) {
+            Swal.fire({
+                icon: "error",
+                title: "Contáctese con el administrador",
+                text: errores,
+                showConfirmButton: false,
+            });
+            return;
+        }
+    }, [errores]);
 
     const handleBtnMarcacionEntrada = () => {
         startAddEntrada(srv_user.cdgo_usrio);
@@ -88,19 +113,13 @@ export const MarcacionPage = () => {
                 </SimpleGrid>
             )}
             <StatAlert
-                text="La marcación de salida se habilitará desde las 12:00:00 P.M"
-                title="Marcación de salida"
-                variant="outline"
-                color="red.7"
-                icon={IconInfoCircle}
-            />
-
-            <StatAlert
-                text="El horario de marcación se rige de: 08:00 A.M (Entrada) hasta las 16:00 P.M (Salida)."
-                title="Horarios"
-                variant="outline"
-                color="indigo.7"
-                icon={IconInfoCircle}
+                text={
+                    <InformationList />
+                }
+                title="Información"
+                variant="light"
+                color="orange.7"
+                icon={IconInfoHexagon}
             />
         </Container>
     );

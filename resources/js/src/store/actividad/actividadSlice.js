@@ -8,6 +8,7 @@ export const actividadSlice = createSlice({
         tableLoad: false,
         actividades: [],
         activateActividad: null,
+        msg: undefined,
         errores: undefined,
     },
     reducers: {
@@ -34,6 +35,9 @@ export const actividadSlice = createSlice({
             state.loadPDF = false;
             state.tableLoad = false;
         },
+        onLoadMessage: (state, { payload }) => {
+            state.msg = payload;
+        },
         onErrores: (state, { payload }) => {
             state.errores = payload;
             state.isLoading = false;
@@ -51,5 +55,6 @@ export const {
     onLoadActividades,
     onSetActivateActividad,
     onClearActividades,
+    onLoadMessage,
     onErrores,
 } = actividadSlice.actions;
