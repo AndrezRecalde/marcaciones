@@ -96,6 +96,7 @@
         </table>
     </main>
 
+    @if ($marcaciones[0]->id_empresa === 2)
     <div class="marginFooter">
         <table>
             <tr>
@@ -103,23 +104,30 @@
                     <div>
                         <p class="mb-5" style="font-size: 12px">Generado por:</p>
                         <hr class="solid margines">
-                        <p style="font-size: 14px">{{ $marcaciones[0]->usuario }}</p>
-                        <p style="font-size: 14px">{{ $marcaciones[0]->cargo_usuario }}</p>
+                        <p style="font-size: 14px"></p>
+                        <p style="font-size: 14px">Lorena Del Rocío Yanchapanta Montalvo</p>
                     </div>
                 </td>
-
-
-                {{-- <td>
-                    <div class="align-item: right;">
-                        <p class="mb-5" style="font-size: 12px">Aprobado por:</p>
-                        <hr class="solid 2px margines">
-                        <p style="font-size: 14px">{{ $marcaciones[0]->director }}</p>
-                        <p style="font-size: 14px">{{ $marcaciones[0]->cargo_director }}</p>
-                    </div>
-                </td> --}}
             </tr>
         </table>
     </div>
+    @else
+    <div class="marginFooter">
+        <table>
+            <tr>
+                <td>
+                    <div>
+                        <p class="mb-5" style="font-size: 12px">Generado por:</p>
+                        <hr class="solid margines">
+                        <p style="font-size: 14px"></p>
+                        <p style="font-size: 14px">Mónica Susana Olmedo Cadena</p>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    @endif
+
 
 </body>
 
