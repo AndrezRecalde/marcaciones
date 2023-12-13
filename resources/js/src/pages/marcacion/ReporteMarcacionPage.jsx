@@ -27,7 +27,7 @@ export const ReporteMarcacionPage = () => {
         startExportPDFMarcacionUser,
         startClearMarcacion,
         errores,
-        msg
+        msg,
     } = useMarcacionStore();
 
     const form = useForm({
@@ -57,10 +57,10 @@ export const ReporteMarcacionPage = () => {
             },
             {
                 accessorFn: (row) =>
-                    row.nombre_permiso !== null
-                        ? "Justificado"
-                        : row.reg_entrada !== null
-                        ? row.reg_entrada
+                    row.reg_entrada !== null
+                        ? reg_entrada
+                        : row.nombre_permiso !== null
+                        ? row.nombre_permiso
                         : null,
                 header: "Hora de Entrada",
                 size: 50,
@@ -79,10 +79,10 @@ export const ReporteMarcacionPage = () => {
             },
             {
                 accessorFn: (row) =>
-                    row.nombre_permiso !== null
-                        ? "Justificado"
-                        : row.reg_salida !== null
-                        ? row.reg_salida
+                    row.reg_salida !== null
+                        ? reg_salida
+                        : row.nombre_permiso !== null
+                        ? row.nombre_permiso
                         : null,
                 header: "Hora de Salida",
                 size: 50,
