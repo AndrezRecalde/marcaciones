@@ -73,7 +73,7 @@ export const RMAdminPage = () => {
             {
                 accessorFn: (row) =>
                     row.reg_entrada !== null
-                        ? reg_entrada
+                        ? row.reg_entrada
                         : row.nombre_permiso !== null
                         ? row.nombre_permiso
                         : null,
@@ -95,7 +95,7 @@ export const RMAdminPage = () => {
             {
                 accessorFn: (row) =>
                     row.reg_salida !== null
-                        ? reg_salida
+                        ? row.reg_salida
                         : row.nombre_permiso !== null
                         ? row.nombre_permiso
                         : null,
