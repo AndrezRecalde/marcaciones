@@ -5,6 +5,7 @@ import {
     Forbidden,
     JustificacionPage,
     ListActividadesPage,
+    MarcacionImplicit,
     MarcacionPage,
     NotFound,
     RMAdminPage,
@@ -43,6 +44,8 @@ export const PrivatePages = () => {
                 />
 
                 <Route path="/soporte" element={<SoportePage />} />
+
+                <Route path="/admin/t/marcacion/implicita" element={<MarcacionImplicit />} />
 
                 <Route path="/forbidden" element={<Forbidden />} />
 

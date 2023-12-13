@@ -218,6 +218,18 @@ export const useMarcacionStore = () => {
         dispatch(onSavedStorageFields({ ...seleccion }));
     };
 
+    const startAddMarcacionImplicita = async(fecha) => {
+        try {
+            const { data } = await controlApi.post("/add/marcacion/implicita", { fecha });
+            dispatch(onLoadMessage(data));
+            setTimeout(() => {
+                dispatch(onLoadMessage(undefined));
+            }, 40);
+        } catch (error) {
+            ExceptionMessageError(error);
+        }
+    }
+
     const startClearMarcacion = () => {
         dispatch(onClearMarcacion());
     };
@@ -256,5 +268,6 @@ export const useMarcacionStore = () => {
         startExportPDFMarcacionUser,
         startExportPDFMarcacionesAdmin,
         startStorageFields,
+        startAddMarcacionImplicita
     };
 };

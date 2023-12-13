@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Exports\MarcacionesExport;
 use App\Models\SrvJustificacion;
+use App\Models\User;
 use Carbon\CarbonPeriod;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -296,6 +297,33 @@ class MarcacionController extends Controller
             ->fechas($request->fecha_inicio, $request->fecha_fin)
             ->get();
 
-            return response()->json(['status' => 'success', 'justificaciones' => $justificaciones], 200);
+        return response()->json(['status' => 'success', 'justificaciones' => $justificaciones], 200);
+    }
+
+    function addMarcacionImplicitas(Request $request): JsonResponse
+    {
+        try {
+            $totalUsuariosLosep = User::from('usrios_sstma as u')
+                ->selectRaw('u.cdgo_usrio')
+                ->where('u.losep', 1)
+                ->get();
+            foreach ($totalUsuariosLosep as $usuario) {
+                $marcacion = Marcacion::where('srv_marcaciones.user_id', $usuario['cdgo_usrio'])
+                    ->where('srv_marcaciones.fecha', $request->fecha)
+                    ->first();
+                if (!$marcacion) {
+                    $marcacion = new Marcacion();
+                    $marcacion->fecha = $request->fecha;
+                    $marcacion->reg_entrada = null;
+                    $marcacion->reg_salida = null;
+                    $marcacion->user_id = $usuario['cdgo_usrio'];
+                    $marcacion->save();
+                }
+            }
+            return response()->json(['status' => 'success', 'msg' => 'Se ha registrado correctamente'], 201);
+
+        } catch (\Throwable $th) {
+            return response()->json(['status' => 'error', 'msg' => $th->getMessage()], 500);
+        }
     }
 }

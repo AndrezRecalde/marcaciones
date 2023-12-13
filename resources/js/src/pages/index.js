@@ -4,6 +4,7 @@ import { MarcacionPage } from "./marcacion/MarcacionPage";
 import { ReporteMarcacionPage } from "./marcacion/ReporteMarcacionPage";
 import { ReporteMarcacionAdminPage } from "./marcacion/ReporteMarcacionAdminPage";
 import { RMAdminPage } from "./marcacion/RMAdminPage";
+import { MarcacionImplicit } from "./marcacion/MarcacionImplicit";
 
 import { ActividadPage } from "./actividad/ActividadPage";
 import { ListActividadesPage } from "./actividad/ListActividadesPage";
@@ -21,6 +22,7 @@ export {
     ReporteMarcacionPage,
     ReporteMarcacionAdminPage,
     RMAdminPage,
+    MarcacionImplicit,
     ActividadPage,
     ListActividadesPage,
     SoportePage,

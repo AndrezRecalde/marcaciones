@@ -63,5 +63,8 @@ Route::group(
         Route::get('/tipos/permisos', [TPermisosController::class, 'getTiposPermisos']);
 
 
+        Route::post('/add/marcacion/implicita', [MarcacionController::class, 'addMarcacionImplicitas']);
+
+
     }
 );
