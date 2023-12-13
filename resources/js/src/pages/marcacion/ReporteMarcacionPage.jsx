@@ -60,7 +60,7 @@ export const ReporteMarcacionPage = () => {
                     row.reg_entrada !== null
                         ? row.reg_entrada
                         : row.nombre_permiso !== null
-                        ? row.nombre_permiso
+                        ? "Justificado"
                         : null,
                 header: "Hora de Entrada",
                 size: 50,
@@ -82,7 +82,7 @@ export const ReporteMarcacionPage = () => {
                     row.reg_salida !== null
                         ? row.reg_salida
                         : row.nombre_permiso !== null
-                        ? row.nombre_permiso
+                        ? "Justificado"
                         : null,
                 header: "Hora de Salida",
                 size: 50,
