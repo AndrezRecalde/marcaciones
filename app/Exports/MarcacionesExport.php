@@ -116,6 +116,7 @@ class MarcacionesExport implements FromView, WithHeadings, WithColumnWidths, Wit
         ->departamento($this->cdgo_dprtmnto)
         ->usuario($this->cdgo_usrio)
         ->where('d.id_empresa', $this->id_empresa)
+        ->where('u.losep', 1)
         ->orderby('d.nmbre_dprtmnto', 'ASC')
         ->orderBy('u.nmbre_usrio', 'ASC')
         ->orderBy('m.fecha', 'ASC')
