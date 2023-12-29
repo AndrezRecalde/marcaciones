@@ -24,7 +24,7 @@ class AuthController extends Controller
                 ->first();
 
             if ($user) {
-                $token = $user->createToken('auth_token')->plainTextToken;
+                $token = $user->createToken(name: 'auth_token', expiresAt: now()->addMinutes(180))->plainTextToken;
                 return response()->json([
                     'status'        =>  'success',
                     'access_token'  =>  $token,
@@ -49,7 +49,7 @@ class AuthController extends Controller
             ->first();
 
         if ($user) {
-            $token = $user->createToken('auth_token')->plainTextToken;
+            $token = $user->createToken(name: 'auth_token', expiresAt: now()->addMinutes(180))->plainTextToken;
             return response()->json([
                 'status'        =>  'success',
                 'access_token'  =>  $token,

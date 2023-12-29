@@ -23,7 +23,7 @@ export const ActividadPage = () => {
         if (errores !== undefined) {
             Swal.fire({
                 icon: "error",
-                title: "Contáctese con el administrador",
+                title: "Opps..",
                 text: errores,
                 showConfirmButton: false,
             });
