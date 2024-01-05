@@ -75,7 +75,7 @@ export const MarcacionPage = () => {
     return srv_user.losep !== 1 ? (
         <Container size="sm" my={30}>
             <StatAlert
-                text="Según el MEMO-023-HAP-TTHH usted no está obligado a llevar Marcación En-Línea.
+                text="Según la administración de TTHH usted no está obligado a realizar Marcación En-Línea.
                  Si usted cree que existe un error, comuniquese lo más pronto posible con TTHH"
                 title="Información"
                 variant="light"
