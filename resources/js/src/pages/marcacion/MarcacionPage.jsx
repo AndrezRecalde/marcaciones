@@ -72,7 +72,19 @@ export const MarcacionPage = () => {
         startAddSalida(srv_user.cdgo_usrio);
     };
 
-    return (
+    return srv_user.losep !== 1 ? (
+        <Container size="sm" my={30}>
+            <StatAlert
+                text="Según la administración de TTHH a través del MEMORANDO Nº130-GADPE-HAP-GTH-2024
+                usted no está obligado a realizar Marcación En-Línea.
+                Si usted cree que existe un error, comuniquese lo más pronto posible con TTHH."
+                title="Información"
+                variant="light"
+                color="red.7"
+                icon={IconInfoHexagon}
+            />
+        </Container>
+    ) : (
         <Container size="sm" my={30}>
             <Title className={classes.title} ta="center">
                 Marcación En-Línea
