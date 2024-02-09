@@ -4,5 +4,5 @@ export const PublicRoutes = ({ children }) => {
     const token = localStorage.getItem("eth_token");
 
 
-    return !token ? children : <Navigate to="/marcaciones" />;
+    return !token ? children : <Navigate to="/marcacion" />;
 };
