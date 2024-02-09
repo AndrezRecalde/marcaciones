@@ -6,7 +6,7 @@ import {
 } from "@tabler/icons-react";
 
 export const lFuncionarios = [
-    /* {
+    {
         label: "Marcación",
         icon: IconCalendarCheck,
         initiallyOpened: true,
@@ -14,7 +14,7 @@ export const lFuncionarios = [
             { label: "Marcación diaria", link: "/marcacion" },
             { label: "Reporte de Marcación", link: "/reporte/marcaciones" },
         ],
-    }, */
+    },
     {
         label: "Actividad",
         icon: IconListCheck,
@@ -48,10 +48,10 @@ export const lFuncionarioTTHH = [
         icon: IconLayersSubtract,
         initiallyOpened: true,
         links: [
-            /* {
+            {
                 label: "Reporte General",
                 link: "/reporte/marcaciones/admin/tthh",
-            }, */
+            },
             {
                 label: "Reporte Administrativo",
                 link: "/reporte/avanzado/marcaciones/admin/tthh",
